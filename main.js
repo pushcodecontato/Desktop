@@ -15,7 +15,7 @@ app.on('ready',function(){
       height:600,
       minWidth:500,
       minHeight:500,
-      icon:path.join(__dirname,'images/icons/icon.png'),
+      icon:path.join(__dirname,'images/icons/icon.ico'),
       webPreferences: {
         contextIsolation: false,
         nodeIntegration: true,
@@ -73,9 +73,9 @@ ipcMain.on('genPDF',(event,pdfHtml)=>{
 
 	  if(!caminho) return console.error(err);
 
-	  console.log("Caminho : ",caminho); // { filename: '/app/businesscard.pdf' }
+	  console.log("Caminho : ",caminho); // { filename: '/caminho/sdsd.pdf' }
 
-    evento.sender.send('genPdf-complite',caminho);
+    evento.sender.send('genPDF-complite',caminho);
 
 	});
 
