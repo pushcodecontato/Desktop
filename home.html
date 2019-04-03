@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> MobiShare </title>
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="font/awesome/all.css">
+    <link rel="stylesheet" href="font/elegant/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script  src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+    <script src="js/index.js"></script>
+</head>
+<body>
+<header class="row">
+    <div id="logo" class="cold5 esquerda">
+        <div class="logo">
+            <img src="img/icon.png">
+        </div>
+        <div class="desc center">
+            <label> MobiShare </label>
+        </div>
+        </div>
+    <form role="search" class="cold4 center esquerda">
+        <span class="content-icon-input direita"><input type="text" placeholder="Pesquisar..." class="direita">
+              <span aria-hidden="true" class="icon_search"></span>            
+        </span>
+    </form>
+</header>
+<div role="main" class="row">
+    <div  id="painel-menu-usuario" class="cold3 esquerda center">
+        <div data-model="user" class="esquerda">
+            <div class="img">
+                <img src="img/user.png">
+            </div>
+            <div class="desc">
+                <label> Damaris</label>
+                <br/>
+                <a>Sair</a>
+            </div>
+        </div>
+        <nav role="menu" class="row">
+            <div role="itemmenu">
+                <div>
+                    <i class="far fa-user"></i>
+                    <a href="javascript:getTbl('usuario')">Usuários</a>
+                </div>
+            </div>
+            <div role="itemmenu">
+                <div>
+                    <i class="fas fa-briefcase"></i>
+                    <a>Funcionários</a>
+                </div>
+            </div>
+            <div role="itemmenu">
+                <div>
+                    <i class="fas fa-cash-register"></i>
+                    <a>C. Receber</a>
+                </div>
+            </div>
+            <div role="itemmenu">
+                <div>
+                    <i class="fas fa-money-check"></i>
+                    <a>C. Pagar</a>
+                </div>
+            </div>
+            <div role="itemmenu">
+                <div>
+                    <i class="fas fa-tasks"></i>
+                    <a>C. Bancaria</a>
+                </div>
+            </div>
+            <div role="itemmenu">
+                <div>
+                    <i class="fas fa-shopping-cart"></i>
+                    <a>Pedidos</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="cold8 esquerda" id="painel">
+        <div class="row" id="MenuBox">
+            <div class="itemmenu center">
+                <div class="img">
+                    <i class="far fa-user"></i>
+                </div>
+                <div class="center separator"></div>
+                <div class="desc">
+                    Usuários
+                </div>
+            </div>
+            <div class="itemmenu center">
+                <div class="img">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="center separator"></div>
+                <div class="desc">
+                    Funcionários
+                </div>
+            </div>
+            <div class="itemmenu center">
+                <div class="img">
+                    <i class="fas fa-cash-register"></i>
+                </div>
+                <div class="center separator"></div>
+                <div class="desc">
+                    Contas á Receber
+                </div>
+            </div>
+            <div class="itemmenu center">
+                <div class="img">
+                    <i class="fas fa-money-check"></i>
+                </div>
+                <div class="center separator"></div>
+                <div class="desc">
+                    Contas á Pagar
+                </div>
+            </div>
+            <div class="itemmenu center">
+                <div class="img">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="center separator"></div>
+                <div class="desc">
+                    Conciliação Bancaria
+                </div>
+            </div>
+            <div class="itemmenu center">
+                <div class="img">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="center separator"></div>
+                <div class="desc">
+                    Pedidos
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="container">
+    
+</div>
+<script src="js/index.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> MobiShare </title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/index.js"></script>
+    <script src="libs/chartjs/chart.bundle.min.js"></script>
+</head>
+<body>
+    <div class="center-vertical">
+        <img src="../images/icons/icon.png">
+        <div class="grup">
+            <label> Usuario : </label>
+            <input type="text">
+        </div>
+        <div class="grup">
+            <label> Senha : </label>
+            <input type="password">
+        </div>
+        <button onclick="notifyBrowser()" style="float: right; margin-top: 5px;">Salvar</button>
+     </div>
+    <script>
+      function notifyBrowser(){
+        Swal.fire(
+        'Good job!',
+        'You clicked the button!',
+        'success'
+        )
+      }
+      function notifySystem(){
+        new Notification("Login",{
+          body:'Login ocorreu com falhas!',
+          icon:'../images/icon.png'
+        })
+      }
+    </script>
+</body>
+</html>
