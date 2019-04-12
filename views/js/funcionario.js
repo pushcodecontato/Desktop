@@ -7,20 +7,25 @@ var funcionarios = {
 
     init:function(){
       let lista = [
-                     {id:1,cod:'gfr534',nome:'Gil',email:'gilberto.tec@vivaldi.net',
-                      cpf:'482.268.587-14',rg:'52.782.502-8',telefone:'4574-5575',cargo:{id:12,nome:'Administrador'}},
-                     {id:2,cod:'kjui6543',nome:'Sandra',email:'sandra@vivaldi.net',
-                      cpf:'759.837.120-20',rg:'52.792.552-7',telefone:'5858-5875',cargo:{id:16,nome:'Diretor'}},
-                     {id:3,cod:'hy57845',nome:'Rafael',email:'rafael@vivaldi.net',
-                      cpf:'990.772.050-04',rg:'52.782.502-8',telefone:'5245-5872',cargo:{id:18,nome:'Coordenador'}},
-                     {id:4,cod:'khy5689',nome:'Alexandre',email:'alexandre@vivaldi.net',
-                      cpf:'028.371.370-49',rg:'52.782.502-8',telefone:'3567-5846',cargo:{id:17,nome:'Gestor'}},
-                    ];
-       
-      funcionarios.tabela = $('#tbl_funcionarios tbody');
-      for(let usuario of lista){
+                     {id:1,cod:'gfr534',nome:'Claudio',email:'ramos@mail.com',cpf:'482.268.587-14',rg:'52.782.502-8',
+                      telefone:'4574-5575',setor:{id:1,nome:"Administração"},cargo:{id:1,nome:'Administrador'} },
 
-           funcionarios.lista[usuario.id] = usuario;   
+                     {id:2,cod:'kjui6543',nome:'Sandra',email:'sandra@vivaldi.net',cpf:'759.837.120-20',rg:'52.792.552-7',
+                      telefone:'5858-5875',setor:{id:2,nome:"RH"},cargo:{id:2,nome:'Diretor'} },
+
+                     {id:3,cod:'hy57845',nome:'Rafael',email:'rafael@vivaldi.net',cpf:'990.772.050-04',rg:'52.782.502-8',
+                      telefone:'5245-5872',setor:{id:1,nome:"Administração"},cargo:{id:4,nome:'Coordenador'} },
+
+                     {id:4,cod:'khy5689',nome:'Alexandre',email:'alexandre@vivaldi.net',cpf:'028.371.370-49',rg:'52.782.502-8',
+                      telefone:'3567-5846',setor:{id:3,nome:"TI"},cargo:{id:3,nome:'Gestor'} },
+                  ];
+       
+      
+      funcionarios.tabela = $('#tbl_funcionarios tbody');
+
+      for(let funcionario of lista){
+
+           funcionarios.lista[funcionario.id] = funcionario;   
        
       }
        
@@ -33,17 +38,17 @@ var funcionarios = {
 
         funcionarios.tabela.html('');
 
-        for(let usuario of lista){
-            funcionarios.addView(usuario);
+        for(let funcionario of lista){
+            funcionarios.addView(funcionario);
         }
 
     },
-    // Adiciona o usuario passados como paremetros a tabela
+    // Adiciona o funcionario passados como paremetros a tabela
     addView:function(funcionario){
         let view = $(`
             <tr data-id="${funcionario.id}">
                 <td>${funcionario.id}</td>
-                <td>${funcionario.email}</td>
+                <td>${funcionario.nome}</td>
                 <td>${funcionario.cpf}</td>
                 <td>${funcionario.cargo.nome}</td>
                 <td class="center">
@@ -63,78 +68,121 @@ var funcionarios = {
     },
     updateView:function(id){
         
-        let usuario =  {};
-        if(typeof id == "object")usuario = id
-        else usuario = funcionarios.lista[id];
+        let funcionario =  {};
+        if(typeof id == "object")funcionario = id
+        else funcionario = funcionarios.lista[id];
 
-        funcionarios.tabela.find(`tr[data-id="${usuario.id}"]`)
+        funcionarios.tabela.find(`tr[data-id="${funcionario.id}"]`)
         .html(`
-                <td>${usuario.id}</td>
-                <td>${usuario.email}</td>
-                <td>${usuario.cpf}</td>
-                <td>3h</td>
+                <td>${funcionario.id}</td>
+                <td>${funcionario.nome}</td>
+                <td>${funcionario.cpf}</td>
+                <td>${funcionario.cargo.nome}</td>
                 <td class="center">
-                    <a href="javascript:funcionarios.ver(${usuario.id})"><label><i class="far fa-eye"></i>Exibir</label></a>
-                    <a href="javascript:funcionarios.deletar(${usuario.id})"><label><i class="far fa-trash-alt"></i>Deletar</label></a>
-                    <a href="javascript:funcionarios.editar(${usuario.id})"><label><i class="fas fa-edit"></i>Editar</label></a></td>
+                    <a href="javascript:funcionarios.ver(${funcionario.id})"><label><i class="far fa-eye"></i>Exibir</label></a>
+                    <a href="javascript:funcionarios.deletar(${funcionario.id})"><label><i class="far fa-trash-alt"></i>Deletar</label></a>
+                    <a href="javascript:funcionarios.editar(${funcionario.id})"><label><i class="fas fa-edit"></i>Editar</label></a></td>
                 </td>`);
     },
     editar:function(id){
-        let usuario = {};
-        // Verificado se o usuario já esta sendo psssado como parametro
-        if(typeof id == "object")usuario = id
-        else usuario = funcionarios.lista[id];
+        let funcionario = {};
+        // Verificado se o funcionario já esta sendo psssado como parametro
+        if(typeof id == "object")funcionario = id
+        else funcionario = funcionarios.lista[id];
         
+
+        let slcCargo = $('<select  class="input-icone" name="cargo" required></select>');
+        let slcSetor = $('<select  class="input-icone" name="setor" required></select>');
+
+
+         /* Adicionando options nos slc */
+        for(let cargo of cargos.lista){
+
+            if(cargo.id == funcionario.cargo.id)slcCargo.append(`<option value="${cargo.id}" selected>${cargo.nome}</option>`);
+            else slcCargo.append(`<option value="${cargo.id}">${cargo.nome}</option>`);
         
+        }
+
+        for(let setor of setores.lista){
+            if(setor.id == funcionario.setor.id)slcSetor.append(`<option value="${setor.id}" selected>${setor.nome}</option>`);
+            else slcSetor.append(`<option value="${setor.id}">${setor.nome}</option>`);
+        }
 
         let alerta = new Alert(`<form>\
                                     <div class="row">
                                        <div class="cold6">
                                             <label class="row"> Nome: </label>
                                             <div class="content-icon-input cold10">
-                                                <input class="input-icone" data-model='nome' value="${usuario.nome}" >
+                                                <input class="input-icone" name='nome' value="${funcionario.nome}" required>
                                                 <span aria-hidden="true" class="icon_profile"></span>
                                             </div>
                                        </div>
                                        <div class="cold3">
+                                            <label class="row"> Cod: </label>
+                                            <input value="${funcionario.cod}"  name='cod' required>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="cold6">
                                             <label class="row"> CPF: </label>
-                                            <input value="${usuario.cpf}"  data-model='cpf'>
+                                            <input name='cpf' style=" width: 303px; " value="${funcionario.cpf}"  required>
+                                       </div>
+                                       <div class="cold3">
+                                            <label class="row"> RG: </label>
+                                            <input name='rg' value="${funcionario.rg}"  required>
                                        </div>
                                     </div>
                                     <div class="row">
                                        <div class="cold6">
                                             <label class="row"> E-mail: </label>
                                             <div class="content-icon-input cold10">
-                                                <input class="input-icone" data-model='email' value="${usuario.email}"  required>
+                                                <input class="input-icone" name='email' value="${funcionario.email}"  required>
                                                 <span aria-hidden="true" class="icon_mail_alt"></span>
                                             </div>
                                        </div>
                                        <div class="cold3">
                                             <label class="row"> Telefone: </label>
                                             <div class="content-icon-input">
-                                                <input class="input-icone"  data-model="telefone" value="${usuario.telefone}">
+                                                <input class="input-icone"  name="telefone" value="${funcionario.telefone}" required>
                                                 <span aria-hidden="true" class="icon_phone"></span>
                                             </div>
                                        </div>
                                     </div>
                                     <div class="row">
                                        <div class="cold8" style="width:81%;">
-                                            <label class="row"> Senha: </label>
+                                            <label class="row"> Cargo: </label>
                                             <div class="content-icon-input cold10">
-                                                <input type="password" class="input-icone" data-model="senha" required value="${usuario.nome}" >
-                                                <span aria-hidden="true" class="icon_key_alt"></span>
+                                                <select  class="input-icone" name="cargo" required>
+                                                    ${slcCargo.html()}
+                                                </select>
+                                                <span aria-hidden="true" class="icon_toolbox"></span>
                                             </div>
-                                       </div>
-                                       <div class="cold3">
+                                            <span style="font-size: 1.9em; position: relative; margin-top: 0px; color: #2d2; display: inline-block" aria-hidden="true" class="icon_plus_alt"></span>
                                        </div>
                                     </div>
+                                    <div class="row">
+                                       <div class="cold8" style="width:81%;">
+                                            <label class="row"> Setor: </label>
+                                            <div class="content-icon-input cold10">
+                                                <select  class="input-icone" name="setor" required>
+                                                    ${slcSetor.html()}
+                                                </select>
+                                                <span aria-hidden="true" class="icon_contacts"></span>
+                                            </div>
+                                            <span style="font-size: 1.9em; position: relative; margin-top: 0px; color: #2d2; display: inline-block" aria-hidden="true" class="icon_plus_alt"></span>
+                                       </div>
+                                    </div>
+                                    <button type="submit"></button>
                                 </form>`);
+
         
         alerta.buttons.push({
             texto:'Salvar',
             click:function(){
                 
                  let formulario = alerta.janela.find('form');
+                 
+                 let btnSubmit  = formulario.find('button[type="submit"]');
 
                  let listaDados = {};
                  
@@ -143,36 +191,51 @@ var funcionarios = {
                  formulario.submit(function(event){
                     
                     event.preventDefault();
-                    
-                    formulario.find('input[data-model]').each(function(elm,list){
-                       $(this).removeClass('required');
-                       
-                       if( $(this).val().slice('') <1 || typeof $(this).val() == "undefined" ){
-					       $(this).addClass('required');
-					       return false;
-       				   }
 
-                       listaDados[$(this).attr('data-model')] = $(this).val() || '';
+                    // Inputs
+                    formulario.find('input[name]').each(function(){
+
+                       listaDados[$(this).attr('name')] = $(this).val() || '';
+
+                    });
+
+                    // SELECT's
+                    formulario.find('select[name]').each(function(elm,list){
+
+                       let id = $(this).val();
+
+                       let nome= $(this).find('option[value="' + id + '"]').html();
+
+                       listaDados[$(this).attr('name')] = {
+                           id,nome
+                       };
 
                     });
                     
-                    listaDados.id = usuario.id;
+                    listaDados.id = funcionario.id;
+                    
 
                     funcionarios.dao.update(listaDados).then(function(){
                         alerta.close();
-                        funcionarios.updateView(usuario.id);
+                        funcionarios.updateView(funcionario.id);
 
                     })
                     
 
                  })
                  
-                 formulario.submit();
+                 btnSubmit.click();
 
             }
         })
+
+        alerta.show = ()=>{
+            // Usando o jquery ui para criar a combobox
+            alerta.janela.find("[name='cargo']").combobox();
+            alerta.janela.find("[name='setor']").combobox();
+        }
     
-        alerta.view('Editar Usuario ' + usuario.nome).then(html=>{
+        alerta.view('Editar funcionario ' + funcionario.nome).then(html=>{
 
         }).catch(erro=>{
             
@@ -232,12 +295,11 @@ var funcionarios = {
             texto:'Editar',
             click:function(){
                 alerta.close();
-                console.log("Editar chamada : ",funcionario);
                 funcionarios.editar(funcionario);
             }
         })
     
-        alerta.view('Usuario: ' + funcionario.nome).then(html=>{
+        alerta.view('funcionario: ' + funcionario.nome).then(html=>{
 
         }).catch(erro=>{
 
@@ -245,9 +307,9 @@ var funcionarios = {
     },
     deletar:function(id){
         
-        let usuario = funcionarios.lista[id];
+        let funcionario = funcionarios.lista[id];
 
-        let alerta = new Alert(`<h1>Desejá realmente deletar <strong>${usuario.nome}</strong>?</h1>`,null,null);
+        let alerta = new Alert(`<h1>Desejá realmente deletar <strong>${funcionario.nome}</strong>?</h1>`,null,null);
         alerta.view().then(html=>{
 
         }).catch(erro=>{
@@ -255,7 +317,7 @@ var funcionarios = {
         })
         .then(function(){
         
-            console.log("Iniciano o delete");
+
             funcionarios.dao.delete(id).then(function(){
                 
                 funcionarios.removeView(id);
@@ -267,54 +329,99 @@ var funcionarios = {
         })
     },
     criar:function(){
+
+        let slcCargo = $('<select  class="input-icone" name="cargo" required></select>');
+        let slcSetor = $('<select  class="input-icone" name="setor" required></select>');
+
+
+         /* Adicionando options nos slc */
+        for(let cargo of cargos.lista){
+
+           slcCargo.append(`<option value="${cargo.id}">${cargo.nome}</option>`);
+        
+        }
+
+        for(let setor of setores.lista){
+            
+            slcSetor.append(`<option value="${setor.id}">${setor.nome}</option>`);
+        
+        }
+
         let alerta = new Alert(`<form>\
                                     <div class="row">
                                        <div class="cold6">
                                             <label class="row"> Nome: </label>
                                             <div class="content-icon-input cold10">
-                                                <input class="input-icone" data-model='nome' placeholder="João" value>
+                                                <input class="input-icone" placeholder="Guilherme Luiz Gomes" name='nome'  required>
                                                 <span aria-hidden="true" class="icon_profile"></span>
                                             </div>
                                        </div>
                                        <div class="cold3">
+                                            <label class="row"> Cod: </label>
+                                            <input name='cod' placeholder="f3434" required>
+                                       </div>
+                                    </div>
+                                    <div class="row">
+                                       <div class="cold6">
                                             <label class="row"> CPF: </label>
-                                            <input value placeholder="000.000.000-00" data-model='cpf'>
+                                            <input name='cpf' style=" width: 303px; "  placeholder="603.427.162-20" required>
+                                       </div>
+                                       <div class="cold3">
+                                            <label class="row"> RG: </label>
+                                            <input name='rg' placeholder="35.948.004-4" required>
                                        </div>
                                     </div>
                                     <div class="row">
                                        <div class="cold6">
                                             <label class="row"> E-mail: </label>
                                             <div class="content-icon-input cold10">
-                                                <input class="input-icone" placeholder="exemplo@mail.com" data-model='email' value required>
+                                                <input class="input-icone" placeholder="gguilhermeluizgomes@ceviu.com.br" name='email' required>
                                                 <span aria-hidden="true" class="icon_mail_alt"></span>
                                             </div>
                                        </div>
                                        <div class="cold3">
                                             <label class="row"> Telefone: </label>
                                             <div class="content-icon-input">
-                                                <input class="input-icone" placeholder="(11)4303-6889" data-model="telefone" value>
+                                                <input class="input-icone" placeholder="(15) 2834-3718" name="telefone" required>
                                                 <span aria-hidden="true" class="icon_phone"></span>
                                             </div>
                                        </div>
                                     </div>
                                     <div class="row">
                                        <div class="cold8" style="width:81%;">
-                                            <label class="row"> Senha: </label>
+                                            <label class="row"> Cargo: </label>
                                             <div class="content-icon-input cold10">
-                                                <input type="password" class="input-icone" data-model="senha" required value="asdsa" >
-                                                <span aria-hidden="true" class="icon_key_alt"></span>
+                                                <select  class="input-icone" name="cargo" required>
+                                                   ${slcCargo.html()}
+                                                </select>
+                                                <span aria-hidden="true" class="icon_toolbox"></span>
                                             </div>
-                                       </div>
-                                       <div class="cold3">
+                                            <span style="font-size: 1.9em; position: relative; margin-top: 0px; color: #2d2; display: inline-block" aria-hidden="true" class="icon_plus_alt"></span>
                                        </div>
                                     </div>
+                                    <div class="row">
+                                       <div class="cold8" style="width:81%;">
+                                            <label class="row"> Setor: </label>
+                                            <div class="content-icon-input cold10">
+                                                <select  class="input-icone" name="setor" required>
+                                                   ${slcSetor.html()}
+                                                </select>
+                                                <span aria-hidden="true" class="icon_contacts"></span>
+                                            </div>
+                                            <span style="font-size: 1.9em; position: relative; margin-top: 0px; color: #2d2; display: inline-block" aria-hidden="true" class="icon_plus_alt"></span>
+                                       </div>
+                                    </div>
+                                    <button type="submit"></button>
                                 </form>`);
-        
+
+
         alerta.buttons.push({
             texto:'Salvar',
             click:function(){
                 
                  let formulario = alerta.janela.find('form');
+                 
+                 let btnSubmit  = formulario.find('button[type="submit"]');
 
                  let listaDados = {};
                  
@@ -323,35 +430,47 @@ var funcionarios = {
                  formulario.submit(function(event){
                     
                     event.preventDefault();
-                    
-                    formulario.find('input[data-model]').each(function(elm,list){
-                       $(this).removeClass('required');
-                       
-                       if( $(this).val().slice('') <1 || typeof $(this).val() == "undefined" ){
-					       $(this).addClass('required');
-					       return false;
-       				   }
 
-                       listaDados[$(this).attr('data-model')] = $(this).val() || '';
+                    // Inputs
+                    formulario.find('input[name]').each(function(){
+
+                       listaDados[$(this).attr('name')] = $(this).val() || '';
+
+                    });
+                    // SELECT's
+                    formulario.find('select[name]').each(function(elm,list){
+
+                       let id = $(this).val();
+
+                       let nome= $(this).find('option[value="' + id + '"]').html();
+
+                       listaDados[$(this).attr('name')] = {
+                           id,nome
+                       };
 
                     });
                     
 
-                    funcionarios.dao.insert(listaDados).then(function(usuario){
+                    funcionarios.dao.insert(listaDados).then(function(funcionario){
                         alerta.close();
-                        funcionarios.addView(usuario);
-
+                        funcionarios.addView(funcionario);
                     })
                     
 
                  })
                  
-                 formulario.submit();
+                 btnSubmit.click();
 
             }
         })
+
+        alerta.show = ()=>{
+            // Usando o jquery ui para criar a combobox
+            alerta.janela.find("[name='cargo']").combobox();
+            alerta.janela.find("[name='setor']").combobox();
+        }
     
-        alerta.view('Aticionar Usuario ').then(html=>{
+        alerta.view('Adicionar funcionario ').then(html=>{
 
         }).catch(erro=>{
             
@@ -371,6 +490,7 @@ var funcionarios = {
 
                 funcionarios.lista[dados.id] = dados;
 
+
                 resolve(dados);
             })
         },
@@ -378,10 +498,12 @@ var funcionarios = {
             
             return new Promise(function(resolve,reject){
                 
-                funcionarios.lista[dados.id].nome = dados.nome;
-                funcionarios.lista[dados.id].email= dados.email;
+                funcionarios.lista[dados.id].nome   = dados.nome;
+                funcionarios.lista[dados.id].email  = dados.email;
                 funcionarios.lista[dados.id].telefone = dados.telefone;
-                funcionarios.lista[dados.id].cpf = dados.cpf;
+                funcionarios.lista[dados.id].cpf    = dados.cpf;
+                funcionarios.lista[dados.id].cargo  = dados.cargo;
+                funcionarios.lista[dados.id].setor  = dados.setor;
 
                 resolve(funcionarios.lista[dados.id]);
 
@@ -397,6 +519,22 @@ var funcionarios = {
             })
         }
     }
+}
+var setores = {
+    lista:[
+        {id:1,nome:"Administração"},
+        {id:2,nome:"RH"},
+        {id:3,nome:"TI"},
+        {id:4,nome:"Market"}
+    ]
+}
+var cargos = {
+    lista:[
+        {id:1,nome:"Administrador"},
+        {id:2,nome:"Diretor"},
+        {id:3,nome:"Gestor"},
+        {id:4,nome:"Coordenador"}
+    ]
 }
 
 // Iniciando

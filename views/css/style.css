@@ -227,22 +227,23 @@ input[type="text"]:focus,input[type="password"]:focus{
 }
 .alert .close{
 
-  width: min-content;
+width: min-content;
 
-  display: block;
+display: block;
 
-  position: relative;
+position: relative;
 
-  float: right;
+float: right;
 
-  margin: -24px 5px 0px 0px;
+margin: -27px 5px 0px 0px;
 
-  font-size: 18px;
+font-size: 1.2em;
 
-  color: #696969;
+color: #696969;
 
-  font-weight: bold;
-  cursor:pointer;
+font-weight: bold;
+
+cursor:pointer;
 }
 .alert .close:hover{
   color:#000000;
@@ -259,15 +260,27 @@ input[type="text"]:focus,input[type="password"]:focus{
   padding-bottom: 7px;
 }
 
-.alert form input,.alert form .content-icon-input input,.alert form input{
-text-indent: 6px;
-min-width: 181px;
-float: left;
-height: 26px;
-vertical-align: middle;
-background: #fff;
-color: #666;
-border: 0.1px solid #e5e5e5;
+.alert form button[type="submit"]{
+  display:none;
+}
+
+.alert form input,.alert form .content-icon-input input,.alert form input,.alert form select{
+
+  text-indent: 6px;
+
+  min-width: 181px;
+
+  float: left;
+
+  height: 26px;
+
+  vertical-align: middle;
+
+  background: #fff;
+
+  color: #666;
+
+  border: 0.1px solid #e5e5e5;
 }
 .alert form label{
   text-align: initial;
@@ -307,6 +320,7 @@ input[type="text"]:focus,input[type="password"]:focus{
   padding-left: 20px;
   width: 100%;
 }
+
 .alert form .content-icon-input:hover>span{
   color:#006D5C;
 }

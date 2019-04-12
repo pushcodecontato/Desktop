@@ -88,27 +88,27 @@ var usuarios = {
                                        <div class="cold6">
                                             <label class="row"> Nome: </label>
                                             <div class="content-icon-input cold10">
-                                                <input class="input-icone" data-model='nome' value="${usuario.nome}" >
+                                                <input class="input-icone" name='nome' value="${usuario.nome}" required>
                                                 <span aria-hidden="true" class="icon_profile"></span>
                                             </div>
                                        </div>
                                        <div class="cold3">
                                             <label class="row"> CPF: </label>
-                                            <input value="${usuario.cpf}"  data-model='cpf'>
+                                            <input value="${usuario.cpf}"  name='cpf' required>
                                        </div>
                                     </div>
                                     <div class="row">
                                        <div class="cold6">
                                             <label class="row"> E-mail: </label>
                                             <div class="content-icon-input cold10">
-                                                <input class="input-icone" data-model='email' value="${usuario.email}"  required>
+                                                <input class="input-icone" name='email' value="${usuario.email}"  required>
                                                 <span aria-hidden="true" class="icon_mail_alt"></span>
                                             </div>
                                        </div>
                                        <div class="cold3">
                                             <label class="row"> Telefone: </label>
                                             <div class="content-icon-input">
-                                                <input class="input-icone"  data-model="telefone" value="${usuario.telefone}">
+                                                <input class="input-icone"  name="telefone" value="${usuario.telefone}" required>
                                                 <span aria-hidden="true" class="icon_phone"></span>
                                             </div>
                                        </div>
@@ -117,53 +117,50 @@ var usuarios = {
                                        <div class="cold8" style="width:81%;">
                                             <label class="row"> Senha: </label>
                                             <div class="content-icon-input cold10">
-                                                <input type="password" class="input-icone" data-model="senha" required value="${usuario.nome}" >
+                                                <input type="password" class="input-icone" name="senha" required value="${usuario.nome}" >
                                                 <span aria-hidden="true" class="icon_key_alt"></span>
                                             </div>
                                        </div>
                                        <div class="cold3">
                                        </div>
                                     </div>
+                                    <button type="submit"></button>
                                 </form>`);
         
         alerta.buttons.push({
             texto:'Salvar',
             click:function(){
                 
-                 let formulario = alerta.janela.find('form');
+                let formulario = alerta.janela.find('form');
+                let btnSubmit  = formulario.find('button[type="submit"]');
+                
+                let listaDados = {};
 
-                 let listaDados = {};
-                 
-                 formulario.off('submit');
+                formulario.off('submit');
 
-                 formulario.submit(function(event){
-                    
-                    event.preventDefault();
-                    
-                    formulario.find('input[data-model]').each(function(elm,list){
-                       $(this).removeClass('required');
-                       
-                       if( $(this).val().slice('') <1 || typeof $(this).val() == "undefined" ){
-					       $(this).addClass('required');
-					       return false;
-       				   }
+                formulario.on('submit',(elm)=>{
+                    elm.preventDefault();
 
-                       listaDados[$(this).attr('data-model')] = $(this).val() || '';
+                    formulario.find('input[name]').each(function(elm,list){
+
+                       listaDados[$(this).attr('name')] = $(this).val() || '';
 
                     });
                     
-                    listaDados.id = usuario.id;
+
+                     listaDados.id = usuario.id;
 
                     usuarios.dao.update(listaDados).then(function(){
                         alerta.close();
                         usuarios.updateView(usuario.id);
 
                     })
-                    
 
-                 })
+                });
+                
+
                  
-                 formulario.submit();
+               btnSubmit.click();
 
             }
         })
@@ -214,7 +211,7 @@ var usuarios = {
             texto:'Editar',
             click:function(){
                 alerta.close();
-                console.log("Editar chamada : ",usuario);
+
                 usuarios.editar(usuario);
             }
         })
@@ -237,7 +234,7 @@ var usuarios = {
         })
         .then(function(){
         
-            console.log("Iniciano o delete");
+
             usuarios.dao.delete(id).then(function(){
                 
                 usuarios.removeView(id);
@@ -254,27 +251,27 @@ var usuarios = {
                                        <div class="cold6">
                                             <label class="row"> Nome: </label>
                                             <div class="content-icon-input cold10">
-                                                <input class="input-icone" data-model='nome' placeholder="João" value>
+                                                <input name="nome" class="input-icone"  placeholder="João" required>
                                                 <span aria-hidden="true" class="icon_profile"></span>
                                             </div>
                                        </div>
                                        <div class="cold3">
                                             <label class="row"> CPF: </label>
-                                            <input value placeholder="000.000.000-00" data-model='cpf'>
+                                            <input  name="cpf" placeholder="000.000.000-00"  required>
                                        </div>
                                     </div>
                                     <div class="row">
                                        <div class="cold6">
                                             <label class="row"> E-mail: </label>
                                             <div class="content-icon-input cold10">
-                                                <input class="input-icone" placeholder="exemplo@mail.com" data-model='email' value required>
+                                                <input name="email" class="input-icone" placeholder="exemplo@mail.com" required>
                                                 <span aria-hidden="true" class="icon_mail_alt"></span>
                                             </div>
                                        </div>
                                        <div class="cold3">
                                             <label class="row"> Telefone: </label>
                                             <div class="content-icon-input">
-                                                <input class="input-icone" placeholder="(11)4303-6889" data-model="telefone" value>
+                                                <input name="telefone" class="input-icone" placeholder="(11)4303-6889"  required>
                                                 <span aria-hidden="true" class="icon_phone"></span>
                                             </div>
                                        </div>
@@ -283,38 +280,33 @@ var usuarios = {
                                        <div class="cold8" style="width:81%;">
                                             <label class="row"> Senha: </label>
                                             <div class="content-icon-input cold10">
-                                                <input type="password" class="input-icone" data-model="senha" required value="asdsa" >
+                                                <input name="password" type="password" class="input-icone" required>
                                                 <span aria-hidden="true" class="icon_key_alt"></span>
                                             </div>
                                        </div>
                                        <div class="cold3">
                                        </div>
                                     </div>
+                                    <button type="submit"></button>
                                 </form>`);
         
         alerta.buttons.push({
             texto:'Salvar',
             click:function(){
                 
-                 let formulario = alerta.janela.find('form');
+                let formulario = alerta.janela.find('form');
+                let btnSubmit  = formulario.find('button[type="submit"]');
+                
+                let listaDados = {};
 
-                 let listaDados = {};
-                 
-                 formulario.off('submit');
+                formulario.off('submit');
 
-                 formulario.submit(function(event){
-                    
-                    event.preventDefault();
-                    
-                    formulario.find('input[data-model]').each(function(elm,list){
-                       $(this).removeClass('required');
-                       
-                       if( $(this).val().slice('') <1 || typeof $(this).val() == "undefined" ){
-					       $(this).addClass('required');
-					       return false;
-       				   }
+                formulario.on('submit',(elm)=>{
+                    elm.preventDefault();
 
-                       listaDados[$(this).attr('data-model')] = $(this).val() || '';
+                    formulario.find('input[name]').each(function(elm,list){
+
+                       listaDados[$(this).attr('name')] = $(this).val() || '';
 
                     });
                     
@@ -323,12 +315,12 @@ var usuarios = {
                         alerta.close();
                         usuarios.addView(usuario);
 
-                    })
-                    
+                    });
 
-                 })
+                });
+                
+                btnSubmit.click();
                  
-                 formulario.submit();
 
             }
         })
@@ -350,6 +342,7 @@ var usuarios = {
                 }while(id in usuarios.lista)// Gera um id Aleatorio que não exista no array
 
                 dados.id = id;
+  
 
                 usuarios.lista[dados.id] = dados;
 
