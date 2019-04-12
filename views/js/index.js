@@ -1,10 +1,10 @@
 try{
-window.$ = window.jquery = require("jQuery");
-const Swal = require('sweetalert2');
-}catch(e){
-    console.log("Erro ao pegar as Dependencias",e);
+  window.$ = window.jquery = require("jQuery");
+  require("jquery-ui");
+  const Swal = require('sweetalert2');
+}catch(erro){
+  console.log("Erro : ",erro.toString());
 }
-
 /* Atenção essa função cuida do redimensionamento da tela  e dos defineWidths*/
 var defineWidths = {};
 defineWidths = {
@@ -77,69 +77,130 @@ function getTbl(tabela){
 }
 
 
+/* Alert Padrão */
+/*
+ * Metodos:
+ * close() = fecha a janela
+ * html = conteudo
+ * falha = callback de falha
+ * sucesso = callback de sucesso
+ * view() = função que mostra o alert na tela 
+ *           retorna um primise de then para sucesso(Executa tambem o callback)
+ *           e catch para falha(Executa tambem o callback)
+ */
+function Alert(html,sucesso, falha){
+try{
+    this.html       = html;
+    this.sucesso    = sucesso;
+    this.falha      = falha;
+    this.buttons    = [];
+    this.janela;
+    this.container;
+    this.close      = function(){
+        try{
+            this.container.empty(this.janela);
+            this.container.removeClass('active');
+            return true;
+        }catch(erro){
+            console.log("Erro : ",erro);
+            return false;
+        }
 
-function alertar(html,sucesso, falha){
-    this.html = html;
-    this.sucesso = sucesso;
-    this.falha = falha;
-    this.view = function(){
+    }
+    this.view       = function(titulo){
+
+        var ctx = this;
+        console.log("Titulo passado : ",titulo);
+        console.log("Titulo no objeto : ",this.titulo);
         return new Promise(function(resolve,reject){
-            
-            var conteudo = (this.html)?this.html:'<p> Deseja proceder? </p>';
-            var titulo = (this.titulo)?this.titulo:'Atenção';
-            var janela = $(`<div class="alert">
-                                <div class="titulo">Atenção</div>
-                                <div class="conteudo-html">
-                                    ${conteudo}
-                                </div>
-                                <div class="actions">
-                                    
-                                </div>
-                            </div>`);
+            try{
 
-            if(this.sucesso){
-                var btnConfirm = $('<button class="btnConfirm">  OK </button>');
-                btnConfirm.click(function(){
-                    resolve();
-                    janela.empty();
-                    $('#container').removeClass('active');
-                })
-                janela.find('div.actions').append(btnConfirm);
+                ctx.container = $('#container');
+                var conteudo = (ctx.html)?ctx.html:'<p> Deseja proceder? </p>';
+
+                // Define o titulo do alerta
+                if(ctx.titulo || titulo){
+
+                    titulo = (ctx.titulo)? ctx.titulo: titulo;
+
+                }else titulo = 'Atenção';
+
+                ctx.janela = $(`<div class="alert">
+                                    <div class="titulo">${titulo}</div>
+                                    <div class="close">
+                                        <i class="fas fa-power-off"></i>
+                                    </div>
+                                    <div class="conteudo-html">
+                                        ${conteudo}
+                                    </div>
+                                    <div class="actions">
+
+                                    </div>
+                                </div>`);
+                if(typeof ctx.falha != "undefined"){
+
+                    var btnCancel = $('<button class="btnCancel">  Cancelar </button>');
+                    btnCancel.click(function(){
+                        try{
+                            let html = ctx.janela.html();
+                            ctx.close();
+                            if(typeof ctx.falha == "function")ctx.falha(html);//Promise e callback
+                            if(typeof reject == "function")reject(html);
+                            
+
+                        }catch(erro){
+                            console.log("Erro : ",erro.toString());
+                        }
+                    })
+                    ctx.janela.find('.actions').append(btnCancel);
+                }
+
+                if(typeof ctx.sucesso != "undefined"){
+
+                    var btnConfirm = $('<button class="btnConfirm">  OK </button>');
+                    btnConfirm.click(function(){
+                        try{
+                            
+                            let html = ctx.janela.html();
+                            ctx.close();
+                            if(typeof ctx.sucesso == "function")ctx.sucesso(html);//Promise e callback
+                            if(typeof resolve == "function")resolve(html);
+
+                        }catch(erro){
+                            console.log("Erro : ",erro.toString());
+                        }
+                    })
+                    ctx.janela.find('.actions').append(btnConfirm);
+                }
+                if(typeof ctx.sucesso == "undefined" && typeof ctx.falha == "undefined"){
+                    console.log("Pegando vetor");
+                    ctx.buttons.forEach(function(btn){
+
+                        var botao = $(`<button class="btnConfirm"> ${btn.texto || btn.text} </button>`);
+                        
+                        botao.click(btn.click);
+                        console.log("Adicionando!!",botao);
+                        ctx.janela.find('.actions').append(botao);
+
+                    });
+                }
+                ctx.janela.find('.close i').click(function(){
+                    ctx.close();
+                    if(typeof ctx.falha == "function")ctx.falha();//Promise e callback
+                });
+
+                ctx.container.addClass('active');
+                ctx.container.append(ctx.janela);
+
+            }catch(error){
+                console.log("Erro!!",error.toString());
             }
-            if(this.falha){
-                var btnCancel = $('<button class="btnCancel">  Cancelar </button>');
-                btnCancel.click(function(){
-                    reject();
-                    janela.empty();
-                    $('#container').removeClass('active');
-                })
-                janela.find('div.actions').append(btnCancel);
-            }
-            $('#container').addClass('active');
-            $('#container').append(janela);
-            
+            ctx.janela.draggable();//tornando os alertas arrastaveis;
+
         })
     }
+
+}catch(erro){
+    console.log("Erro : ",erro.toString());
 }
-
-/* Desenvolvendo  codigo desnecessario!! Não apagar 
-var  widthPainel = function(){
-    var painel = document.querySelector('#painel');
-
-    var width = document.querySelector('body').offsetWidth;
-    
-    var widthMenu = document.querySelector('nav[role="menu"]').offsetWidth;
-
-    var tamanho = (width - widthMenu)-1;
-    
-    console.log(" Width Body : ", width);
-    console.log(" Width Menu : ", widthMenu);
-    console.log(" tamanho Geral : ",tamanho);
-
-    painel.style.width = tamanho + 'px';
-
-
 }
-defineWidths.observers.push(widthPainel);
-widthPainel();*/
-

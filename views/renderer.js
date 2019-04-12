@@ -45,3 +45,82 @@ document.addEventListener('DOMContentLoaded', () => {
    console.log("Estou na janela??")
 
 });
+
+try{
+
+var mysql = require("mysql");
+
+var con = mysql.createConnection({
+  host:'localhost',
+  user:'root',
+  password:'12345ola',
+  database:'mob_share'
+});
+
+con.connect(erro=>{
+ if(erro)console.log("Erro:",erro)
+ else console.log("Conexão bem sucedida");
+});
+
+setInterval(()=>{
+ con.query("SELECT 1");
+},14000);
+
+// Retorna apenas a primeira ROW
+con.readQuery = (sql, prepared) => {
+    return new Promise(function(resolve, reject){
+
+         // Mostra um aviso, caso a query não tenha limit 1 no final
+         if(sql.substr(-7).toLowerCase()!='limit 1'){
+               console.warn("Database.js: read Query sem limit 1");
+         }
+
+         // Executa a query
+         con.query(sql, prepared, (err, answer) => {
+                if(err) reject(err);
+                else(resolve(answer[0]));
+
+         });
+
+   });
+
+};
+
+// Retorna apenas a primeira ROW
+con.updateQuery = (sql, prepared) => {
+
+    prepared = prepared || [];
+
+    return new Promise(function(resolve, reject){
+
+        // Executa a query
+        con.query(sql, prepared, (err,result) => {
+
+            if(err) return reject(err);
+            
+            result.id = result.insertedId;
+            resolve(result);
+	});
+   });
+
+};
+
+// Retorna a lista de rows
+con.fetch = function(sql, prepared, callback){
+
+    return new Promise((resolve, reject) => {
+
+          con.query(sql, prepared, (err, answer) => {
+                if(err) reject(err);
+                else resolve(answer);
+
+          });
+
+     });
+};
+
+window.db = con;
+
+}catch(erro){
+  console.log("Erro : ",erro.toString());
+}

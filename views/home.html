@@ -5,9 +5,11 @@
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="font/awesome/all.css">
     <link rel="stylesheet" href="font/elegant/style.css">
+    <link rel="stylesheet" href="libs/jquery-ui/jquery-ui.css">
+    <script src="js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script  src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
-    <script src="js/index.js"></script>
+    <script src="libs/jquery-ui/jquery-ui.min.js"></script>
 </head>
 <body>
 <header class="row">
@@ -20,7 +22,8 @@
         </div>
         </div>
     <form role="search" class="cold4 center esquerda">
-        <span class="content-icon-input direita"><input type="text" placeholder="Pesquisar..." class="direita">
+        <span class="content-icon-input direita">
+              <input type="text" placeholder="Pesquisar..." class="direita" id="search">
               <span aria-hidden="true" class="icon_search"></span>            
         </span>
     </form>
@@ -29,7 +32,7 @@
     <div  id="painel-menu-usuario" class="cold3 esquerda center">
         <div data-model="user" class="esquerda">
             <div class="img">
-                <img src="img/user.png">
+                <img src="img/user.png" onclick="defineImgUser(this)">
             </div>
             <div class="desc">
                 <label> Damaris</label>
@@ -47,7 +50,7 @@
             <div role="itemmenu">
                 <div>
                     <i class="fas fa-briefcase"></i>
-                    <a>Funcionários</a>
+                    <a href="javascript:getTbl('funcionario')">Funcionários</a>
                 </div>
             </div>
             <div role="itemmenu">
@@ -65,7 +68,7 @@
             <div role="itemmenu">
                 <div>
                     <i class="fas fa-tasks"></i>
-                    <a>C. Bancaria</a>
+                    <a title="Conciliação Bancaria" href="javascript:getTbl('bancaria')">C. Bancaria</a>
                 </div>
             </div>
             <div role="itemmenu">

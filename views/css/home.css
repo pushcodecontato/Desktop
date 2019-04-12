@@ -13,6 +13,7 @@
 }
 #MenuBox .itemmenu{
     max-width: 182px;
+    min-height: 128px;
     max-height:150px;
     border:solid 1px #c3c3c3;
     margin-left: 10px;
@@ -35,6 +36,7 @@
 #MenuBox .itemmenu .desc{
     margin-top: 10px;
     margin-bottom: 10px;
+    font-size: 1em;
 }
 #MenuBox .itemmenu:hover{
     cursor:pointer;

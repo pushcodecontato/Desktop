@@ -16,3 +16,34 @@ var gridMenu = function() {//Função de atualização do gridAnuncioVenda
 defineWidths.observers.push(gridMenu);
 
 gridMenu();
+
+
+$('#MenuBox').sortable();
+
+function defineImgUser(imagem){
+    let input  = $('<input type="file">');
+
+
+    input.on('change',function(){ 
+
+          let file = this.files[0];
+
+          var reader = new FileReader();
+
+          reader.readAsDataURL(file);
+
+          reader.onload = function () {
+           console.log(" BASE64 ",reader.result);
+           //console.log(" Tammnho",reader.result.toString().length);
+           $(imagem).attr('src',reader.result);
+
+          };
+
+          reader.onerror = function() {
+
+          }
+
+    })
+
+    input.click();
+}
