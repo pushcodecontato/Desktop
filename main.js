@@ -11,12 +11,13 @@ let tray = null;/* Tray Icon = icone de de notificação no canto inferior direi
 app.on('ready',function(){
   main = new BrowserWindow({ //Janela Principal
       title:' MobiShare ',
-      width:900,
-      height:600,
+      width:1000,
+      height:700,
       minWidth:500,
       minHeight:500,
       icon:path.join(__dirname,'images/icons/icon.ico'),
       webPreferences: {
+	experimentalFeatures: true,
         contextIsolation: false,
         nodeIntegration: true,
         preload: __dirname + '/views/renderer.js',

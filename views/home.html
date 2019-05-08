@@ -2,6 +2,7 @@
 <html>
 <head>
     <title> MobiShare </title>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="font/awesome/all.css">
     <link rel="stylesheet" href="font/elegant/style.css">
@@ -24,7 +25,7 @@
     <form role="search" class="cold4 center esquerda">
         <span class="content-icon-input direita">
               <input type="text" placeholder="Pesquisar..." class="direita" id="search">
-              <span aria-hidden="true" class="icon_search"></span>            
+              <span aria-hidden="true" class="icon_search"></span>
         </span>
     </form>
 </header>
@@ -56,13 +57,13 @@
             <div role="itemmenu">
                 <div>
                     <i class="fas fa-cash-register"></i>
-                    <a>C. Receber</a>
+                    <a href="javascript:getTbl('conta_receber')">C. Receber</a>
                 </div>
             </div>
             <div role="itemmenu">
                 <div>
                     <i class="fas fa-money-check"></i>
-                    <a>C. Pagar</a>
+                    <a href="javascript:getTbl('conta_pagar')">C. Pagar</a>
                 </div>
             </div>
             <div role="itemmenu">
@@ -74,14 +75,14 @@
             <div role="itemmenu">
                 <div>
                     <i class="fas fa-shopping-cart"></i>
-                    <a>Pedidos</a>
+                    <a title="Conciliação Bancaria" href="javascript:getTbl('pedidos')">Pedidos</a>
                 </div>
             </div>
         </nav>
     </div>
     <div class="cold8 esquerda" id="painel">
         <div class="row" id="MenuBox">
-            <div class="itemmenu center">
+            <div class="itemmenu center" onclick="getTbl('usuario')">
                 <div class="img">
                     <i class="far fa-user"></i>
                 </div>
@@ -139,9 +140,8 @@
     </div>
 </div>
 <div id="container">
-    
+
 </div>
-<script src="js/index.js"></script>
 <script src="js/home.js"></script>
 </body>
 </html>
