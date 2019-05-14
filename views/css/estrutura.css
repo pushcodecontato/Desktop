@@ -1,7 +1,7 @@
 body{
     padding: 0px;
     margin: 0px;
-    background-image:url('https://images.unsplash.com/photo-1500731250117-4b0cbb8b276a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1262&q=80');
+    background-image:url('../img/bg.jpg');
     background-size:cover;
     background-attachment: scroll;
     background-repeat: no-repeat;
@@ -39,8 +39,9 @@ form[role] .content-icon-input input[type="text"]{
 }
 form .content-icon-input input[type="text"]{
     text-align: initial;
-    text-indent: 27px;
+    text-indent: 4px;
     box-shadow: none;
+    padding-left: 22px;
 }
 form .content-icon-input span[aria-hidden="true"]{
     position: relative;
@@ -49,7 +50,7 @@ form .content-icon-input span[aria-hidden="true"]{
     font-size: 1em;
 }
 header form[role="search"] .content-icon-input input[type="text"]:focus{
-  border-color:#5cb85c;  
+  border-color:#5cb85c;
   outline:none;
 }
 
@@ -142,26 +143,26 @@ nav[role="menu"]{
     margin-left: auto;
     font-size: 1.4em;
 }
-table,.action-table{
+table.padrao,.action-table{
     min-width: 550px;
     width: 85%;
     margin-left:auto;
     margin-right:auto;
     margin-bottom: 17px;
 }
-table{
+table.padrao{
     border: solid #ddd;
     border-width: 1px 0.2px 0px 0.2px;
     min-width: 550px;
     width: 85%;
     margin-left:auto;
     margin-right:auto;
-    
+
     /* Retirando o border */
     border-collapse: unset;
     border-spacing:unset;
 }
-thead tr th,tbody tr td{
+table.padrao thead tr th,table.padrao tbody tr td{
     vertical-align: bottom;
     border-bottom: 2px solid #ddd;
     padding: 8px;
@@ -175,7 +176,7 @@ tbody tr:nth-child(even) {
 tbody tr:nth-child(odd) {
   background-color: #f5f5f5;
 }
-tbody tr{animation: fadeInRight 1s 1 cubic-bezier(0, 0, 0, 0.67);font-size: 0.8em;}
+table.padrao tbody tr{animation: fadeInRight 1s 1 cubic-bezier(0, 0, 0, 0.67);font-size: 0.8em;}
 /* Cor do poder!!
 tbody tr td:nth-child(even) {
   background-color:black;
@@ -206,10 +207,10 @@ tbody tr td:hover{
     overflow-x: hidden;
 }
 .contem-tabela .action-table{
-    
+
 }
 .contem-tabela .action-table button{
-    
+
 }
 #container{
     height:100vh;

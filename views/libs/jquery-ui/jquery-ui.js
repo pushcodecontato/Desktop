@@ -9649,10 +9649,10 @@ function Datepicker() {
 		prevText: "Prev", // Display text for previous month link
 		nextText: "Next", // Display text for next month link
 		currentText: "Today", // Display text for current month link
-		monthNames: [ "January","February","March","April","May","June",
-			"July","August","September","October","November","December" ], // Names of months for drop-down and formatting
+		monthNames: [ "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+			"Julho","Agosto","Setembro","Outubro","Novembro","Dezembro" ], // Names of months for drop-down and formatting
 		monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ], // For formatting
-		dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ], // For formatting
+		dayNames: [ "segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo" ], // For formatting
 		dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ], // For formatting
 		dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ], // Column headings for days starting at Sunday
 		weekHeader: "Wk", // Column header for week of the year

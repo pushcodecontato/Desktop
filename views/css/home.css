@@ -46,3 +46,18 @@
     -moz-box-shadow: 0px 3px 37px -1px rgba(87,87,87,1);
     box-shadow: 0px 3px 37px -1px rgba(87,87,87,1);
 }
+#frmLogin{
+  margin-left: auto;
+  margin-right: auto;
+}
+.form-menssagem{
+  background-color: #eee;
+  border-radius: 4px;
+  padding: 2px 17px;
+  box-sizing: border-box;
+  margin: 3px 0px 0px 0px;
+  text-align: center;
+}
+[role="itemmenu"].disable,.itemmenu.disable{
+  opacity: 0.7;
+}

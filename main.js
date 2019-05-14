@@ -17,7 +17,7 @@ app.on('ready',function(){
       minHeight:500,
       icon:path.join(__dirname,'images/icons/icon.ico'),
       webPreferences: {
-	experimentalFeatures: true,
+	      experimentalFeatures: true,
         contextIsolation: false,
         nodeIntegration: true,
         preload: __dirname + '/views/renderer.js',
@@ -25,6 +25,7 @@ app.on('ready',function(){
   })
 
   main.loadURL(`file://${__dirname}/views/home.html`);
+  //main.loadURL(`file://${__dirname}/views/index.html`);
   main.on('ready-to-show',()=>main.show())
   main.on('close',()=>{
       main = null;
@@ -51,13 +52,20 @@ ipcMain.on('openWindow',(event,page,data)=>{
   windows[page] = new BrowserWindow({
     width:900,
     height:700,
+    webPreferences: {
+      experimentalFeatures: true,
+      contextIsolation: false,
+      nodeIntegration: true,
+      preload: __dirname + '/views/renderer.js',
+    }
   })
   windows[page].loadURL(`file://${__dirname}/views/${page}`)
   windows[page].on('close',()=>windows[page]=null);
-  windows[page].send('init')
   windows[page].once('ready-to-show', () => {//Evita flash no carregamento da pagina
     windows[page].show()// Exibindo a pagina já carregada
   })
+  windows[page].send('init')
+  windows[page].webContents.openDevTools()
 })
 
 

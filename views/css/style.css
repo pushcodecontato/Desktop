@@ -116,7 +116,7 @@ button:hover{
     color: #006D5C;
     box-shadow:0 0 2px #bac5bb;
 }
-a{
+a[href^="javascript"]{
   color: #006D5C;
   cursor: pointer;
   text-decoration:none;
@@ -336,7 +336,17 @@ cursor:pointer;
   text-align: center;
 }
 
-input.required{
+input.required,select.required{
   border-color: #d20404!important;
   animation: shake 1s 1;
+}
+.content-icon-input button.ui-multiselect{
+  text-indent: 6px;
+    min-width: 181px;
+    float: left;
+    height: 26px;
+    vertical-align: middle;
+    color: #666;
+    position: absolute;
+
 }

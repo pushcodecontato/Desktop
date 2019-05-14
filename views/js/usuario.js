@@ -13,7 +13,7 @@ var usuarios = {
 
         if(lista.length < 1){
           console.log("Sem dados!!");
-          usuarios.tabela.append("<tr>\
+          usuarios.tabela.append("<tr class='mascara'>\
                                       <td colspan='5'>\
                                           <img style=' width: auto; height: auto;'  alt='Nada encontrado' src='img/magnify.gif'>\
                                           <p> Nenhum Registro encontado! </p>\
@@ -38,7 +38,7 @@ var usuarios = {
         usuarios.tabela.html('');
         if(lista.length < 1){
           console.log("Sem dados!!");
-          usuarios.tabela.append("<tr>\
+          usuarios.tabela.append("<tr class='mascara'>\
                                       <td colspan='5' class='lupa'>\
                                           <img  alt='Nada encontrado' src='img/magnify.gif'>\
                                           <p> Nenhum Registro encontado! </p>\
@@ -54,7 +54,7 @@ var usuarios = {
     // Adiciona o usuario passados como paremetros a tabela
     addView:function(usuario){
 
-        let horas = (!usuarios.lista[1].online) ? '--':'3h';
+        let horas = (!usuario.online) ? '--':'3h';
 
         let view = $(`
             <tr data-id="${usuario.id}">
@@ -69,6 +69,8 @@ var usuarios = {
                 </td>
             </tr>
         `);
+
+
         usuarios.tabela.append(view);
     },
     updateView:function(id){
@@ -77,7 +79,7 @@ var usuarios = {
         if(typeof id == "object")usuario = id
         else usuario = usuarios.lista[id];
 
-        let horas = (!usuarios.lista[1].online) ? '--':'3h';
+        let horas = (!usuario.online) ? '--':'3h';
 
         usuarios.tabela.find(`tr[data-id="${usuario.id}"]`)
         .html(`
@@ -95,6 +97,17 @@ var usuarios = {
         usuarios.tabela.find(`tr[data-id="${id}"]`)
         .hide(200,function(){
             $(this).remove();
+            if(Object.keys(usuarios.lista).length < 1){
+
+              usuarios.tabela.find('tr.mascara').remove();
+
+              usuarios.tabela.append("<tr class='mascara'>\
+                                          <td colspan='5' class='lupa'>\
+                                              <img  alt='Nada encontrado' src='img/magnify.gif'>\
+                                              <p> Nenhum Registro encontado! </p>\
+                                          </td>\
+                                      </tr>");
+            }
         });
     },
     editar:function(id){
@@ -147,7 +160,7 @@ var usuarios = {
                                            <div class="cold8" style="width:81%;">
                                                 <label class="row"> Senha: </label>
                                                 <div class="content-icon-input cold10">
-                                                    <input name="password" type="password" class="input-icone" value="5875469" required>
+                                                    <input name="password" type="password" class="input-icone" value="@834rf434frwe8fuds" required>
                                                     <span aria-hidden="true" class="icon_key_alt"></span>
                                                 </div>
                                            </div>
@@ -178,14 +191,64 @@ var usuarios = {
                   formulario.on('submit',(elm)=>{
 
                       elm.preventDefault();
+                     let data = formulario.serializeArray();
+                     /* Verificando se o email já esta cadastrado */
+                     return db.selectById(`tbl_usuario_desktop WHERE email like ?`,[data[2].value]).then(user=>{
+                        formulario.find('[name="email"]').removeClass('required');
+                        if(user && user.id_usuario_desktop != usuario.id){
+                            /// Erro Usuario já cadastrado!!
+                            console.log(" Email já existe ");
+                            $( `<div title="Email já existe! ">
+                                 <p>
+                                   <span class="ui-icon  ui-icon-mail-closed" style="float:left; margin:0 7px 50px 0;"></span>
+                                 </p>
+                                 <p>
+                                   Usuario: <strong>${user.nome}</strong>@<br>
+                                   E-mail : <strong>${user.email}</strong>
+                                 </p>
+                               </div>` ).dialog({
+                                     modal: true,
+                                     buttons: {
+                                       Ok: function() {
+                                         $( this ).dialog( "close" );
+                                         formulario.find('[name="email"]').addClass('required');
+                                       }
+                                     }
+                                   });
+                        } else {
+                            return db.selectById(`tbl_usuario_desktop WHERE cpf like ? `,[data[1].value]).then(userCPF=>{
+                                formulario.find('[name="cpf"]').removeClass('required');
+                                if(userCPF && userCPF.id_usuario_desktop != usuario.id){
+                                  console.log(" CPF já existe ",userCPF);
+                                  console.log(" CPF já existe ",usuario.id);
+                                  $( `<div title="CPF já existe! ">
+                                       <p>
+                                         <span class="ui-icon  ui-icon-mail-closed" style="float:left; margin:0 7px 50px 0;"></span>
+                                       </p>
+                                       <p>
+                                         Usuario: <strong>${userCPF.nome}</strong>@<br>
+                                         E-mail : <strong>${userCPF.email}</strong>
+                                       </p>
+                                     </div>` ).dialog({
+                                           modal: true,
+                                           buttons: {
+                                             Ok: function() {
+                                               $( this ).dialog( "close" );
+                                               formulario.find('[name="cpf"]').addClass('required');
+                                             }
+                                           }
+                                         });
+                                }else{
+                                  usuarios.dao.update(usuario.id,data).then(function(){
 
+                                        alerta.close();
+                                        usuarios.updateView(usuario.id);
 
-                      usuarios.dao.update(usuario.id,formulario.serializeArray()).then(function(){
-
-                          alerta.close();
-                          usuarios.updateView(usuario.id);
-
-                      })
+                                   })
+                                }
+                            })
+                        }
+                     })
 
                   });
 
@@ -197,6 +260,170 @@ var usuarios = {
           alerta.view('Editar Usuario ' + usuario.nome)
           .then(html=>{}).catch(erro=>{});
         })
+    },
+    criar:function(){
+
+        let combobox = '';
+
+        permicoes.dao.selectAll()
+        .then(listaPermicoes=>{
+
+          for(let permicao of listaPermicoes){
+
+              combobox+= `<option value='${permicao.id}'>${permicao.nome.toString()}</option>`;
+          }
+
+
+          let alerta = new Alert(`<form>\
+                                      <div class="row">
+                                         <div class="cold6">
+                                              <label class="row"> Nome: </label>
+                                              <div class="content-icon-input cold10">
+                                                  <input name="nome" class="input-icone"  placeholder="João" required>
+                                                  <span aria-hidden="true" class="icon_profile"></span>
+                                              </div>
+                                         </div>
+                                         <div class="cold3">
+                                              <label class="row"> CPF: </label>
+                                              <input  name="cpf" placeholder="000.000.000-00"  required>
+                                         </div>
+                                      </div>
+                                      <div class="row">
+                                         <div class="cold6">
+                                              <label class="row"> E-mail: </label>
+                                              <div class="content-icon-input cold10">
+                                                  <input name="email" class="input-icone" placeholder="exemplo@mail.com" required>
+                                                  <span aria-hidden="true" class="icon_mail_alt"></span>
+                                              </div>
+                                         </div>
+                                         <div class="cold3">
+                                              <label class="row"> Telefone: </label>
+                                              <div class="content-icon-input">
+                                                  <input name="telefone" class="input-icone" placeholder="(11)4303-6889"  required>
+                                                  <span aria-hidden="true" class="icon_phone"></span>
+                                              </div>
+                                         </div>
+                                      </div>
+                                      <div class="row">
+                                         <div class="cold8" style="width:81%;">
+                                              <label class="row"> Senha: </label>
+                                              <div class="content-icon-input cold10">
+                                                  <input name="password" type="password" class="input-icone" required>
+                                                  <span aria-hidden="true" class="icon_key_alt"></span>
+                                              </div>
+                                         </div>
+                                      </div>
+                                      <div class="row">
+                                         <div class="cold8" style="width:81%;" data-model="slcPermicoes">
+                                              <label class="row"> Permições: </label>
+                                              <select name="permicoes" style="width:290px;" multiple="multiple" required>
+                                                  ${combobox}
+                                              </select>
+                                         </div>
+                                      </div>
+                                      <button type="submit"></button>
+                                  </form>`);
+
+          alerta.buttons.push({
+              texto:'Salvar',
+              click:function(){
+
+                  let formulario = alerta.janela.find('form');
+                  formulario.off('submit');
+
+                  formulario.on('submit',(ev)=>{
+
+                      ev.preventDefault();
+
+                      let data = formulario.serializeArray();
+                      /* Verificando se o email já esta cadastrado */
+                      return db.selectById(`tbl_usuario_desktop WHERE email like ?`,[data[2].value]).then(user=>{
+                         formulario.find('[name="email"]').removeClass('required');
+                         if( user ){
+                             /// Erro Usuario já cadastrado!!
+                             console.log(" Email já existe ");
+                             $( `<div title="Email já existe! ">
+                                  <p>
+                                    <span class="ui-icon  ui-icon-mail-closed" style="float:left; margin:0 7px 50px 0;"></span>
+                                  </p>
+                                  <p>
+                                    Usuario: <strong>${user.nome}</strong>@<br>
+                                    E-mail : <strong>${user.email}</strong>
+                                  </p>
+                                </div>` ).dialog({
+                                      modal: true,
+                                      buttons: {
+                                        Ok: function() {
+                                          $( this ).dialog( "close" );
+                                          formulario.find('[name="email"]').addClass('required');
+                                        }
+                                      }
+                                    });
+                         } else {
+
+                             formulario.find('[name="cpf"]').removeClass('required');
+                             return db.selectById(`tbl_usuario_desktop WHERE cpf like ? `,[data[1].value]).then(user=>{
+
+                                 if(user){
+
+                                   console.log(" CPF já existe ");
+                                   $( `<div title="CPF já existe! ">
+                                        <p>
+                                          <span class="ui-icon  ui-icon-mail-closed" style="float:left; margin:0 7px 50px 0;"></span>
+                                        </p>
+                                        <p>
+                                          Usuario: <strong>${user.nome}</strong>@<br>
+                                          E-mail : <strong>${user.email}</strong>
+                                        </p>
+                                      </div>` ).dialog({
+                                            modal: true,
+                                            buttons: {
+                                              Ok: function() {
+                                                $( this ).dialog( "close" );
+                                                formulario.find('[name="cpf"]').addClass('required');
+                                              }
+                                            }
+                                          });
+
+                                 }else{
+                                   usuarios.dao.insert(data).then(usuario=>{
+
+                                         alerta.close();
+                                         usuarios.addView(usuario);
+                                         usuarios.tabela.find('tr.mascara').remove();
+
+                                    })
+                                 }
+                             })
+                         }
+                      })
+
+                      /*usuarios.dao.insert(formulario.serializeArray())
+                      .then(function(usuario){
+
+                          alerta.close();
+                          usuarios.addView(usuario);
+
+                      });*/
+
+                  });
+
+                  let btnSubmit  = formulario.find('button[type="submit"]');
+                  btnSubmit.click();
+
+
+              }
+          })
+
+          alerta.show = function(){
+              alerta.janela.find('select[name="permicoes"]').multiselect();
+          }
+
+          alerta.view('Adicionar Usuario ').then(html=>{}).catch(erro=>{});
+
+        })
+
+
     },
     ver:function(id){
 
@@ -272,113 +499,10 @@ var usuarios = {
             console.log("Cancelar")
         })
     },
-    criar:function(){
-
-        let combobox = '';
-
-        permicoes.dao.selectAll()
-        .then(listaPermicoes=>{
-
-          for(let permicao of listaPermicoes){
-
-              combobox+= `<option value='${permicao.id}'>${permicao.nome.toString()}</option>`;
-          }
-
-
-          let alerta = new Alert(`<form>\
-                                      <div class="row">
-                                         <div class="cold6">
-                                              <label class="row"> Nome: </label>
-                                              <div class="content-icon-input cold10">
-                                                  <input name="nome" class="input-icone"  placeholder="João" required>
-                                                  <span aria-hidden="true" class="icon_profile"></span>
-                                              </div>
-                                         </div>
-                                         <div class="cold3">
-                                              <label class="row"> CPF: </label>
-                                              <input  name="cpf" placeholder="000.000.000-00"  required>
-                                         </div>
-                                      </div>
-                                      <div class="row">
-                                         <div class="cold6">
-                                              <label class="row"> E-mail: </label>
-                                              <div class="content-icon-input cold10">
-                                                  <input name="email" class="input-icone" placeholder="exemplo@mail.com" required>
-                                                  <span aria-hidden="true" class="icon_mail_alt"></span>
-                                              </div>
-                                         </div>
-                                         <div class="cold3">
-                                              <label class="row"> Telefone: </label>
-                                              <div class="content-icon-input">
-                                                  <input name="telefone" class="input-icone" placeholder="(11)4303-6889"  required>
-                                                  <span aria-hidden="true" class="icon_phone"></span>
-                                              </div>
-                                         </div>
-                                      </div>
-                                      <div class="row">
-                                         <div class="cold8" style="width:81%;">
-                                              <label class="row"> Senha: </label>
-                                              <div class="content-icon-input cold10">
-                                                  <input name="password" type="password" class="input-icone" required>
-                                                  <span aria-hidden="true" class="icon_key_alt"></span>
-                                              </div>
-                                         </div>
-                                      </div>
-                                      <div class="row">
-                                         <div class="cold8" style="width:81%;" data-model="slcPermicoes">
-                                              <label class="row"> Permições: </label>
-                                              <select name="permicoes" style="width:290px;" multiple="multiple">
-                                                  ${combobox}
-                                              </select>
-                                         </div>
-                                      </div>
-                                      <button type="submit"></button>
-                                  </form>`);
-
-          alerta.buttons.push({
-              texto:'Salvar',
-              click:function(){
-
-                  let formulario = alerta.janela.find('form');
-                  formulario.off('submit');
-
-                  formulario.on('submit',(ev)=>{
-
-                      ev.preventDefault();
-
-                      console.log("Array formualrio : ",formulario.serializeArray());
-
-                      usuarios.dao.insert(formulario.serializeArray())
-                      .then(function(usuario){
-
-                          alerta.close();
-                          usuarios.addView(usuario);
-
-                      });
-
-                  });
-
-                  let btnSubmit  = formulario.find('button[type="submit"]');
-                  btnSubmit.click();
-
-
-              }
-          })
-
-          alerta.show = function(){
-              alerta.janela.find('select[name="permicoes"]').multiselect();
-          }
-
-          alerta.view('Adicionar Usuario ').then(html=>{}).catch(erro=>{});
-
-        })
-
-
-    },
     dao:{//Funções que fazem as operações no banco
       selectAll:function(){
         return new Promise(function(resolve,reject){
-          return db.selectAll("tbl_usuario_desktop")
+          return db.selectAll("tbl_usuario_desktop where excluido = 0 ")
           .then(lista=>{
               let listaUsuarios = [];
               for(let usuario of lista){
@@ -427,6 +551,8 @@ var usuarios = {
                 let telefone  = dados[3].value;
                 let senha  = dados[4].value;
 
+                senha = md5(senha);
+
                 let listPermicoes =[];
 
                 for(let permicao of dados.splice(5,dados.length)){
@@ -474,7 +600,10 @@ var usuarios = {
               }
 
               /* Inserindo dados */
-              return db.update("tbl_usuario_desktop SET nome = ?, email = ?, senha = ?, telefone = ?, cpf = ?  WHERE id_usuario_desktop = ?",[nome,email,senha,telefone,cpf,id])
+              if(senha == "@834rf434frwe8fuds")senha =" ";
+              else senha = `senha =  '${md5(senha)}' , `;
+
+              return db.update(`tbl_usuario_desktop SET nome = ?, email = ?, ${senha} telefone = ?, cpf = ?  WHERE id_usuario_desktop = ?`,[nome,email,telefone,cpf,id])
               .then(linhasAfetadas=>{
                   // Granando as permições
                   return permicoes.dao.insert(id,listPermicoes).then(()=>{
@@ -483,7 +612,38 @@ var usuarios = {
                     usuarios.lista[id].email= email;
                     usuarios.lista[id].telefone = telefone;
                     usuarios.lista[id].cpf = cpf;
+                    /* Atualiza do ussuario atual */
+                    if(window.user && window.user.id == id){
+                        db.select("SELECT p.*,if(udp.id_permicoes is null ,'','selected') as selecionado FROM tbl_permissoes p left join tbl_usuario_desktop_permissoes udp on p.id_permissoes = udp.id_permicoes AND udp.id_usuario_desktop = ? ",[id])
+                        .then(function(list){
+                          window.acessos = {};
 
+                          let menu = $('[role="menu"]');
+                          let caixaMenu = $('#MenuBox');
+                          for(let permi of list){
+                              let itemmenu = menu.find(`[data-id="${permi.id_permissoes}"]`);
+                              let itemcaixa = caixaMenu.find(`[data-id="${permi.id_permissoes}"]`);
+                              if(permi.selecionado != 'selected'){
+                                itemmenu.addClass('disable');
+                                itemcaixa.addClass('disable');
+                              }else{
+                                itemmenu.removeClass('disable');
+                                itemcaixa.removeClass('disable');
+                              }
+                              itemmenu.attr('title',permi.descricao)
+                              itemcaixa.attr('title',permi.descricao)
+                              window.acessos[permi.id_permissoes] = {
+                                id:permi.id_permissoes,
+                                nome:permi.nome,
+                                titulo:permi.titulo,
+                                descricao:permi.descricao,
+                                icone:permi.icone,
+                                href:permi.href,
+                                selecionado:permi.selecionado
+                              };
+                          }
+                      })
+                    }
                     resolve(usuarios.lista[id]);
 
                   })
@@ -499,7 +659,13 @@ var usuarios = {
 
                 delete usuarios.lista[id];
 
-                resolve();
+                return db.update('tbl_usuario_desktop SET excluido = 1 where id_usuario_desktop = ?',[id]).then(linhas=>{
+
+                  delete usuarios.lista[id];
+
+                  return resolve();
+
+                })
 
             })
         }

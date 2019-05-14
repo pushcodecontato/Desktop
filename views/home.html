@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="font/elegant/style.css">
     <link rel="stylesheet" href="libs/jquery-ui/jquery-ui.css">
     <script src="js/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-    <script  src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script  src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>-->
     <script src="libs/jquery-ui/jquery-ui.min.js"></script>
 </head>
 <body>
@@ -42,47 +42,47 @@
             </div>
         </div>
         <nav role="menu" class="row">
-            <div role="itemmenu">
+            <div role="itemmenu" data-id="1" class="disable">
                 <div>
                     <i class="far fa-user"></i>
-                    <a href="javascript:getTbl('usuario')">Usuários</a>
+                    <a href="javascript:getTbl('usuario',1)">Usuários</a>
                 </div>
             </div>
-            <div role="itemmenu">
+            <div role="itemmenu" data-id="2" class="disable">
                 <div>
                     <i class="fas fa-briefcase"></i>
-                    <a href="javascript:getTbl('funcionario')">Funcionários</a>
+                    <a href="javascript:getTbl('funcionario',2)">Funcionários</a>
                 </div>
             </div>
-            <div role="itemmenu">
+            <div role="itemmenu" data-id="3" class="disable">
                 <div>
                     <i class="fas fa-cash-register"></i>
-                    <a href="javascript:getTbl('conta_receber')">C. Receber</a>
+                    <a href="javascript:getTbl('conta_receber',3)">C. Receber</a>
                 </div>
             </div>
-            <div role="itemmenu">
+            <div role="itemmenu" data-id="4" class="disable">
                 <div>
                     <i class="fas fa-money-check"></i>
-                    <a href="javascript:getTbl('conta_pagar')">C. Pagar</a>
+                    <a href="javascript:getTbl('conta_pagar',4)">C. Pagar</a>
                 </div>
             </div>
-            <div role="itemmenu">
+            <div role="itemmenu" data-id="5" class="disable">
                 <div>
                     <i class="fas fa-tasks"></i>
-                    <a title="Conciliação Bancaria" href="javascript:getTbl('bancaria')">C. Bancaria</a>
+                    <a title="Conciliação Bancaria" href="javascript:getTbl('bancaria',5)">C. Bancaria</a>
                 </div>
             </div>
-            <div role="itemmenu">
+            <div role="itemmenu" data-id="6" class="disable">
                 <div>
                     <i class="fas fa-shopping-cart"></i>
-                    <a title="Conciliação Bancaria" href="javascript:getTbl('pedidos')">Pedidos</a>
+                    <a title="Conciliação Bancaria" href="javascript:getTbl('pedidos',6)">Pedidos</a>
                 </div>
             </div>
         </nav>
     </div>
     <div class="cold8 esquerda" id="painel">
         <div class="row" id="MenuBox">
-            <div class="itemmenu center" onclick="getTbl('usuario')">
+            <div class="itemmenu center" data-id="1" onclick="getTbl('usuario',1)" class="disable">
                 <div class="img">
                     <i class="far fa-user"></i>
                 </div>
@@ -91,7 +91,7 @@
                     Usuários
                 </div>
             </div>
-            <div class="itemmenu center">
+            <div class="itemmenu center" data-id="2" onclick="getTbl('funcionario',2)" class="disable">
                 <div class="img">
                     <i class="fas fa-briefcase"></i>
                 </div>
@@ -100,7 +100,7 @@
                     Funcionários
                 </div>
             </div>
-            <div class="itemmenu center">
+            <div class="itemmenu center" data-id="3" class="disable">
                 <div class="img">
                     <i class="fas fa-cash-register"></i>
                 </div>
@@ -109,7 +109,7 @@
                     Contas á Receber
                 </div>
             </div>
-            <div class="itemmenu center">
+            <div class="itemmenu center" data-id="4" class="disable">
                 <div class="img">
                     <i class="fas fa-money-check"></i>
                 </div>
@@ -118,7 +118,7 @@
                     Contas á Pagar
                 </div>
             </div>
-            <div class="itemmenu center">
+            <div class="itemmenu center" data-id="5" class="disable">
                 <div class="img">
                     <i class="fas fa-tasks"></i>
                 </div>
@@ -127,7 +127,7 @@
                     Conciliação Bancaria
                 </div>
             </div>
-            <div class="itemmenu center">
+            <div class="itemmenu center" data-id="6" class="disable">
                 <div class="img">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
@@ -143,5 +143,9 @@
 
 </div>
 <script src="js/home.js"></script>
+<script src="libs/jquery-ui-multiselect/jquery.multiselect.js"></script>
+<script src="libs/jquery-ui-multiselect/jquery.multiselect.filter.js"></script>
+<link rel="stylesheet" href="libs/jquery-ui-multiselect/jquery.multiselect.filter.css">
+<link rel="stylesheet" href="libs/jquery-ui-multiselect/jquery.multiselect.css">
 </body>
 </html>

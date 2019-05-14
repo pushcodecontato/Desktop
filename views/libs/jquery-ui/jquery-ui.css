@@ -869,6 +869,8 @@ button.ui-button::-moz-focus-inner {
 	display: block;
 	border-width: 0;
 	padding: 1em 1.4em;
+/*Gil alteração*/
+  padding: 5px 0px;
 	background: none;
 }
 .ui-tooltip {

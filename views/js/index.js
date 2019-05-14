@@ -26,13 +26,19 @@ defineWidths = {
 defineWidths.init();
 
 
-function getTbl(tabela){
+function getTbl(tabela,id){
 
     console.log("Tabela : ",tabela);
 
     if(!tabela)return false;
+    if(typeof window.acessos == "undefined")return frmLogar();
 
-
+    if(window.acessos[id].selecionado != 'selected'){
+      $("<div title='Sem permicao'>\
+          <p>Você não pode acessar esse modulo! Procure o administrador para mais atribuições</p>\
+        </div>").dialog();
+        return false;
+    }
 
 
     //$('#painel')
@@ -195,8 +201,11 @@ try{
                 /* Cuida das mascaras tel e cpf */
                 if(ctx.janela.find('[name="cpf"]')[0]){
                   require('jquery-mask-plugin');
-                  jQuery(ctx.janela.find('input[name="cpf"]')).mask('999.999.99-99');
+                  jQuery(ctx.janela.find('input[name="cpf"]')).mask('999.999.999-99');
                   jQuery(ctx.janela.find('input[name="telefone"]')).mask('(99)9999-9999');
+                  jQuery(ctx.janela.find('input[name="rg"]')).mask('99.999.999-9');
+                  jQuery(ctx.janela.find('input[name="cep"]')).mask('99999-999');
+
                 }
 
                 ctx.show();// chAMANDO CALLBACK PAR AQUANDO O FORMUALRIO E VISTO
@@ -397,3 +406,157 @@ if (!Object.entries) {
 		return reduce(keys(O), (e, k) => concat(e, typeof k === 'string' && isEnumerable(O, k) ? [[k, O[k]]] : []), []);
 	};
 }
+
+setTimeout(function(){
+
+
+function frmLogar(){
+  $( `<form id='frmLogin' onsubmit="logar(this)" title="Login" >
+        <div class="frmDados">
+          <img style="    margin-left: auto;    margin-right: auto;    display: block;" src="img/icon.png">
+          <div class="grup">
+              <label> Usuario : </label>
+              <input style="width:100%;" type="text" name='login' value="lluizricardosilveira@eanac.com.br" placeholder="example@mail.com/482.268.268-15">
+          </div>
+          <div class="grup">
+              <label> Senha : </label>
+              <input style="width:100%;" type="password" value="12345" name='senha' placeholder="123">
+          </div>
+        </>
+      </form>` ).dialog({
+          modal: true,
+          resizable: false,
+          height: "auto",
+          width: 400,
+          open: function(event, ui) {
+             $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar-close").remove();
+             $(this).css({'width':'100%'})
+          },
+          buttons: {
+             Ok: function() {
+               //$( this ).dialog( "close" );
+               let dados = $(this).serializeArray();
+
+               let login = dados[0].value;
+               let senha = dados[1].value;
+
+               let validalogin = /^(([0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2})|([a-z.1-9]+@[a-z]*.*))+$/;
+               $(this).find('[name="login"]').removeClass('required');
+               $(this).find('[name="senha"]').removeClass('required');
+
+               if(login.toString().length < 1 || !validalogin.test(login) ){
+                 console.log("login",login);
+                 console.log("this",this);
+                 $(this).find('[name="login"]').addClass('required');
+               }else if(senha.toString().length < 1 ){
+                 $(this).find('[name="senha"]').addClass('required');
+               }else{
+                 $(this).find('.form-menssagem').remove();
+
+                 db.selectById(`tbl_usuario_desktop where email like ? or cpf like  ?`,[login,login]).then(usuario=>{
+                   if(typeof usuario == "undefined"){
+                     $(this).append('<div class="form-menssagem" style="    background-color: #E91E63;" > Email ou cpf digitado inexistente! </div>');
+                     $(this).find('[name="login"]').addClass('required');
+                   }else if(md5(senha) == usuario.senha){
+                     console.log("Senha incorreta!!",usuario);
+                    $(this).append('<div class="form-menssagem" style="    background-color: #E91E63;" > Senha incorreta! </div>');
+                    $(this).find('[name="senha"]').addClass('required');
+                  }else if(usuario.excluido == 1){
+                     $(this).append('<div class="form-menssagem" style="    background-color: #E91E63;" > Usuario excluido!Contate o administrador </div>');
+                   }else{
+                      window.user = {
+                          id:usuario.id_usuario_desktop,
+                          nome:usuario.nome,
+                          email:usuario.email,
+                          cpf:usuario.cpf,
+                          telefone:usuario.telefone,
+                          online:usuario.logado,
+                          permicoes:[]
+                        }
+                      $(this).append('<div class="form-menssagem" style="    background-color: #2d2;" > Usuario Autenticado! Pegando suas Permições </div>');
+                      $(this).find('.frmDados *').hide();
+                      $(this).find('.frmDados').css({
+                          'background-image':'url("img/load.gif")',
+                          'background-position':'center',
+                          'background-size':'none',
+                          'background-repeat':'no-repeat'});
+                      let ctx = this;
+                      db.select("SELECT p.*,if(udp.id_permicoes is null ,'','selected') as selecionado FROM tbl_permissoes p left join tbl_usuario_desktop_permissoes udp on p.id_permissoes = udp.id_permicoes AND udp.id_usuario_desktop = ? ",[usuario.id_usuario_desktop])
+                      .then(function(listaPermicoes){
+                        window.acessos = {};
+
+                        let menu = $('[role="menu"]');
+                        let caixaMenu = $('#MenuBox');
+                        for(let permicao of listaPermicoes){
+                            let itemmenu = menu.find(`[data-id="${permicao.id_permissoes}"]`);
+                            let itemcaixa = caixaMenu.find(`[data-id="${permicao.id_permissoes}"]`);
+                            if(permicao.selecionado != 'selected'){
+                              itemmenu.addClass('disable');
+                              itemcaixa.addClass('disable');
+                            }else{
+                              itemmenu.removeClass('disable');
+                              itemcaixa.removeClass('disable');
+                            }
+                            itemmenu.attr('title',permicao.descricao)
+                            itemcaixa.attr('title',permicao.descricao)
+                            window.acessos[permicao.id_permissoes] = {
+                              id:permicao.id_permissoes,
+                              nome:permicao.nome,
+                              titulo:permicao.titulo,
+                              descricao:permicao.descricao,
+                              icone:permicao.icone,
+                              href:permicao.href,
+                              selecionado:permicao.selecionado
+                            };
+                        }
+                        $(ctx).find('.form-menssagem').text("Permições Pegas!!");
+                        $(ctx).dialog('close');
+                      })
+                   }
+                 })
+
+
+               }
+
+               //formulario.find('[name="email"]').addClass('required');
+
+               /*let login = form.find('input[name="login"]');
+
+               let senha = form.find('input[name="senha"]');
+
+               selectUserByLogin(login).then(resultado=>{
+
+               })*/
+             }
+           }
+         }).on( "dialogclose", function( event, ui ) {
+            event.preventDefault();
+            console.log("HELOW!!!!!");
+         });
+}
+
+function selectUserByLogin(login){
+  return new Promise((resolve,reject)=>{
+      let validaEmail = /^([a-z.1-9]+@[a-z]*.*)+$/;
+
+      let sql = 'SELECT * FROM tbl_usuario_desktop WHERE ';
+      let prepared = [login.val().toString()];
+
+      if(validaEmail.test(login.val())){
+        sql += ` email like  ? `;
+      } else {
+        sql += ` cpf like  ? `;
+      }
+      return db.selectById(sql,prepared)
+      .then(usuario=>{
+          if(usuario){
+            console.log("te encontrei!!! :D ",sql);
+          }else{
+            console.log("Não te encontrei!!! :c ",sql);
+          }
+      })
+  })
+
+}
+frmLogar()
+},800);
