@@ -67,7 +67,13 @@ function connect(config){
 
     con.connect(erro=>{
      if(erro){
+
+       $('[role="dialog"] form').dialog('destroy');
+
        console.log("Falha na coneção !!",erro);
+
+       //if(typeof window.frmUser != "undefined")window.frmUser.dialog('destroy');
+
        $( `<div title=" Falha na conexão! ">
             <p>
               <span class="ui-icon  ui-icon-mail-closed" style="float:left; margin:0 7px 50px 0;"></span>
@@ -80,7 +86,12 @@ function connect(config){
                 modal: true,
                 width:'425px',
                 open: function(event, ui) {
+                  console.log("OI!!!");
                    $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar-close").remove();
+                   //if(typeof window.frmUser != "undefined")window.frmUser.dialog('destroy');
+                   setTimeout(function(){
+                     if(typeof window.frmUser != "undefined")window.frmUser.dialog('destroy');
+                   },500);
                 },
                 buttons: {
                   'Tentar Novamente': function() {

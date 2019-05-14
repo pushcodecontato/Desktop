@@ -431,6 +431,7 @@ function frmLogar(){
           open: function(event, ui) {
              $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar-close").remove();
              $(this).css({'width':'100%'})
+             window.frmUser = $(this);
           },
           buttons: {
              Ok: function() {
@@ -558,5 +559,6 @@ function selectUserByLogin(login){
   })
 
 }
-frmLogar()
-},800);
+frmLogar();
+window.frmLogar = frmLogar;
+},200);
