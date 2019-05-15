@@ -57,7 +57,7 @@ function connect(config){
     if(typeof config == "undefined"){
       con = mysql.createConnection({
         host:'mob-share.mysql.uhserver.com',
-        user:'mob_share1',
+        user:'mob_share',
         password:'Pushcode1@',
         database:'mob_share'
       });

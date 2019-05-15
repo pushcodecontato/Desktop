@@ -199,12 +199,13 @@ try{
                 ctx.container.append(ctx.janela);
 
                 /* Cuida das mascaras tel e cpf */
-                if(ctx.janela.find('[name="cpf"]')[0]){
+                if(ctx.janela.find('[name="cpf"]')[0] || ctx.janela.find('[name="cnpj"]')[0]){
                   require('jquery-mask-plugin');
                   jQuery(ctx.janela.find('input[name="cpf"]')).mask('999.999.999-99');
                   jQuery(ctx.janela.find('input[name="telefone"]')).mask('(99)9999-9999');
                   jQuery(ctx.janela.find('input[name="rg"]')).mask('99.999.999-9');
                   jQuery(ctx.janela.find('input[name="cep"]')).mask('99999-999');
+                  jQuery(ctx.janela.find('input[name="cnpj"]')).mask('99.999.999/9999-99');
 
                 }
 

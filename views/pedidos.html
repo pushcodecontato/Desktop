@@ -1,0 +1,115 @@
+<script src="js/pedidos.js"></script>
+<div id="tabsPedidos" style="height: 88vh; border-radius: 9px;">
+  <ul>
+    <li><a href="#fragment-1" onclick="pedidos.init()"><span>Pedidos</span></a></li>
+    <li><a href="#fragment-2" onclick="fornecedores.init()"><span>fornecedor</span></a></li>
+    <li><a href="#fragment-3" onclick="produtos.init()"><span>Produto</span></a></li>
+    <li><a href="#fragment-4"><span>Lançamento de nota f.</span></a></li>
+  </ul>
+  <div id="fragment-1">
+
+            <div class="conteudo">
+              <p class="legend">Pedidos</p>
+              <div class="contem-tabela">
+                  <div class="action-table">
+                      <button onclick="pedidos.criar()" style="font-size: .7em;"><i class="fas fa-dollar-sign"></i> Criar </button>
+                  </div>
+                  <table class="padrao" id="tbl_pedidos">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Usuario</th>
+                              <th>Valor</th>
+                              <th>Data</th>
+                              <th></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                  </table>
+              </div>
+            </div>
+
+  </div>
+  <div id="fragment-2">
+
+            <div class="conteudo">
+              <p class="legend">Fornecedores</p>
+              <div class="contem-tabela">
+                  <div class="action-table">
+                      <button onclick="fornecedores.criar()" style="font-size: .7em;"><i class="far fa-user"></i> Criar </button>
+                  </div>
+                  <table class="padrao" id="tbl_fornecedor">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Nome</th>
+                              <th>CNPJ</th>
+                              <th>Cod</th>
+                              <th></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                  </table>
+              </div>
+            </div>
+  </div>
+  <div id="fragment-3">
+
+            <div class="conteudo">
+              <p class="legend">Produtos </p>
+              <div class="contem-tabela">
+                  <div class="action-table">
+                      <button onclick="produtos.criar()" style="font-size: .7em;"><i class="fas fa-archive"></i> Criar </button>
+                  </div>
+                  <table class="padrao" id="tbl_produtos">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Nome</th>
+                              <th>Valor unitario</th>
+                              <th>Cod</th>
+                              <th></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                  </table>
+              </div>
+            </div>
+
+  </div>
+  <div id="fragment-4">
+
+            <div class="conteudo">
+              <p class="legend"> L. de Nota </p>
+              <div class="contem-tabela">
+                  <div class="action-table">
+                      <button onclick="funcionarios.criar()" style="font-size: .7em;"><i class="fas fa-barcode"></i> Criar </button>
+                  </div>
+                  <table class="padrao" id="tbl_funcionarios">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Valor</th>
+                              <th>Baixa</th>
+                              <th>Usuario</th>
+                              <th></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                  </table>
+              </div>
+            </div>
+
+  </div>
+</div>
+
+<script>
+$( "#tabsPedidos" ).tabs();
+setTimeout(function(){
+  pedidos.init();
+},350)
+</script>

@@ -38,10 +38,13 @@ UPDATE tbl_usuario_desktop SET  excluido = 0 WHERE id_usuario_desktop = 1;
 
 DELETE FROM tbl_permissoes WHERE id_permissoes in (7,8,9,10,11,12);
 
-SELECT tbl_funcionario.*, MAX(cf.id_cargo) as id_cargo ,
+SELECT tbl_funcionario.*, MAX(tbl_cargo_funcionario.id_cargo) as id_cargo ,
 MAX(tbl_cargos.nome) as 'cargo', tbl_setor.id_setor, tbl_setor.nome as 'setor'
 FROM tbl_funcionario 
-inner join ( SELECT * FROM tbl_cargo_funcionario order by tbl_cargo_funcionario.id_cargo_funcionario  desc ) as cf on (tbl_funcionario.id_funcionario = cf.id_funcionario) 
+inner join tbl_cargo_funcionario on (tbl_funcionario.id_funcionario = tbl_cargo_funcionario.id_funcionario) 
 inner join tbl_cargos on (tbl_cargo_funcionario.id_cargo = tbl_cargos.id_cargo)
 inner join tbl_setor on tbl_funcionario.id_setor = tbl_setor.id_setor 
-WHERE tbl_funcionario.excluido = 0 group by tbl_funcionario.id_funcionario;
+WHERE tbl_funcionario.excluido = 0 group by tbl_funcionario.id_funcionario order by tbl_cargo_funcionario.id_cargo_funcionario desc;
+
+
+select tbl_pedido.*, tbl_usuario_desktop.nome, tbl_usuario_desktop.foto,tbl_usuario_desktop.excluido from  tbl_pedido inner join tbl_usuario_desktop on tbl_pedido.id_usuario_desktop = tbl_usuario_desktop.id_usuario_desktop;

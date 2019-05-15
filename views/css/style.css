@@ -116,7 +116,7 @@ button:hover{
     color: #006D5C;
     box-shadow:0 0 2px #bac5bb;
 }
-a[href^="javascript"]{
+a[href^="javascript"],.ui-widget-content a[href^="javascript"]{
   color: #006D5C;
   cursor: pointer;
   text-decoration:none;
