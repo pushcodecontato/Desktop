@@ -61,3 +61,20 @@
 [role="itemmenu"].disable,.itemmenu.disable{
   opacity: 0.7;
 }
+.checket{
+  text-align: center;
+  border-radius: 2px;
+  color: #6f6c6c;
+  padding: 2px 1px;
+  border: solid 1px #6acc8b;
+  background-color: #fff;
+  transition: all 1s;
+}
+.checket.action{
+  text-align: center;
+  border-radius: 2px;
+  color: #caff00;
+  padding: 2px 1px;
+  border: solid 1px #6acc8b;
+  background-color: #03f313;
+}

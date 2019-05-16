@@ -1,0 +1,30 @@
+<div class="conteudo">
+  <p class="legend">Contas a Pagar</p>
+  <div class="contem-tabela">
+      <div class="action-table">
+          <button onclick="conta_pagar.criar()"><i class="fas fa-cart-arrow-down"></i> Criar Despesa</button>
+          <button onclick="conta_pagar.exportar()"><i class="fas fa-file-export"></i> Exportar</button>
+          <button onclick="conta_pagar.conciliar()"><i class="fab fa-cc-paypal"></i>Conciliar</button>
+      </div>
+      <table class="padrao" id="tbl_conta_pagar">
+          <thead>
+              <tr>
+                  <th></th>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Valor</th>
+                  <th>Data</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+  </div>
+</div>
+<script src="js/conta_pagar.js"></script>
+<script>
+setTimeout(function(){
+    conta_pagar.init();
+  },350)
+</script>
