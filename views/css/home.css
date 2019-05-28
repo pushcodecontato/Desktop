@@ -69,6 +69,8 @@
   border: solid 1px #6acc8b;
   background-color: #fff;
   transition: all 1s;
+  max-width: 40px;
+  max-height: 41px;
 }
 .checket.action{
   text-align: center;

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron main.js",
-	  "win32": "electron-packager . mobShare --platform=win32 --arch=ia32",
+    "win32": "electron-packager . mobShare --platform=win32 --arch=ia32",
     "win64": "electron-packager . mobShare --platform=win32 --arch=x64",
     "linux32": "electron-packager . mobShare --platform=linux --arch=ia32",
     "linux64": "electron-packager . mobShare --platform=linux --arch=x64",
@@ -41,7 +41,7 @@
     "mysql": "2.16.0"
   },
   "devDependencies": {
-	"electron": "4.0.4",
+    "electron": "4.0.4",
     "electron-prebuilt": "^1.4.13"
   }
 }

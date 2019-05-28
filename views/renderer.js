@@ -14,7 +14,7 @@ window.genPDF = (nome,html)=>{
 	console.log("CHamndo o mainProcess");
 	console.log(ipcRenderer.send('genPDF',{html,nome}));
 }
-window.genCSV = (nome,csv)=>{
+window.genCSV = (csv)=>{
 
       var link = document.createElement('a');//Criando link de dowload
 
@@ -55,11 +55,17 @@ function connect(config){
     var mysql = require("mysql");
     var con = {};
     if(typeof config == "undefined"){
-      con = mysql.createConnection({
+      /*con = mysql.createConnection({
         host:'mob-share.mysql.uhserver.com',
         user:'mob_share',
         password:'Pushcode1@',
         database:'mob_share'
+      });*/
+      con = mysql.createConnection({
+        host:'www.mobshareps.com.br',
+        user:'mobshareps',
+        password:'pushcode123',
+        database:'dbmobshareps'
       });
     } else {
       con = mysql.createConnection(config);

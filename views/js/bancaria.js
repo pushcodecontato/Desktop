@@ -2,8 +2,185 @@ var operacoes ={
   init:function(){
 
   },
-  criar:function(){
+  criar:function(id_conta, lista){
+      contas.dao.selectById(id_conta).then(conta=>{
 
+          let despesas = '';
+          for(let despesa of lista){
+
+            let data_compra = new Date(despesa.data_entrada);
+            data_compra       = ((data_compra.getDate()<10)? '0' + data_compra.getDate():data_compra.getDate()+"/"+((data_compra.getMonth()<10)? '0' + data_compra.getMonth():data_compra.getMonth()))+"/"+data_compra.getFullYear();
+            let tipo = '';
+            if(despesa.tipo == "F"){
+                tipo = '<i class="far fa-money-bill-alt"></i> Pagamento ';
+            } else if(despesa.tipo == "P"){
+                tipo = '<i class="fas fa-cart-plus"></i> Pedido ';
+            }
+
+            despesas+= `<tr data-id="${despesa.id_conta_pagar}" data-valor="${despesa.valor}">
+                              <td data-id="${despesa.id_conta_pagar}" data-valor="${despesa.valor}">
+                                <div onclick="conta_pagar.check(this)" data-id="${conta.id_conta_pagar}" class="checket"><i class="fas fa-check"></i></div>
+                              </td>
+                              <td>${tipo}</td>
+                              <td>R$ ${despesa.valor}</td>
+                              <td>${data_compra}</td>
+                              <td>
+                                  <a href="javascript:contas.deletar(${conta.id_conta_pagar},${conta.tipo})"><label><i class="fas fa-exclamation-circle"></i>INFO</label></a>
+                              </td>
+                          </tr>`;
+          }
+
+          let alerta = new Alert(`<form>
+                                      <div class="row">
+                                         <div class="cold6">
+                                              <label class="row"> Conta: </label>
+                                              <div class="content-icon-input cold10">
+                                                  <input class="input-icone" value="${conta.numero_conta}" disabled>
+                                                  <span aria-hidden="true" class="icon_wallet"></span>
+                                              </div>
+                                         </div>
+                                         <div class="cold3">
+                                              <label class="row"> Valor na conta: </label>
+                                              <input value="${conta.saldo_conta_bancaria}" disabled>
+                                         </div>
+                                      </div>
+                                      <div class="row">
+                                         <div class="cold3" style=" width: 32%; ">
+                                              <label class="row"> Valor Tranferido pela Conta: </label>
+                                              <input  style="min-width:auto;" value="${conta.saldo_conta_bancaria}" disabled>
+                                         </div>
+                                         <div class="cold1" style=" width: 22%;">
+                                              <label class="row"> Valor: </label>
+                                              <input value="${0}" style="  min-width: 10px;    width: 92%; " disabled>
+                                         </div>
+                                         <div class="cold3" style="">
+                                              <label class="row"> Total na conta depois: </label>
+                                              <input value="${100000}" disabled>
+                                         </div>
+                                      </div>
+                                      <div class="row">
+                                         <table class="padrao">
+                                             <thead>
+                                                 <tr>
+                                                     <th></th>
+                                                     <th>Tipo</th>
+                                                     <th>valor</th>
+                                                     <th>Data</th>
+                                                     <th></th>
+                                                 </tr>
+                                             </thead>
+                                             <tbody>
+                                                 ${despesas}
+                                             </tbody>
+                                         </table>
+                                      </div>
+                                      <div class="row"></div>
+                                  </form>`);
+
+          alerta.buttons.push({
+              texto:' Fechar ',
+              click:function(){
+                  //funcionarios.efetuarPagamento(funcionario.id);
+              }
+          })
+          alerta.show = function(){
+            alerta.janela.find('tbody tr').each((acc,elm)=>{
+                console.log("Elm : ",elm);
+                linha = $(elm);
+                console.log("tr : ",linha);
+                console.log("td : ",linha.find('td[data-id]'));
+                linha.find('td[data-id] div.checket').on('click',function(){
+                    console.log("Hellow!!!!!")
+                })
+            })
+
+            /*alerta.janela.find('button[type="button"]').click(function(){
+                $(`<form title="Adicionar Pagamento">
+                      <div class="row">
+                         <div class="cold6">
+                              <label class="row"> Valor Final: </label>
+                              <input  style="min-width:auto;" name="valor" value="${salarios[0].salario}" >
+                         </div>
+                         <div class="cold3">
+                              <label class="row"> Cod: </label>
+                              <input name="cod" style="min-width:auto;" >
+                         </div>
+                      </div>
+                      <div class="row" style="  margin-top: 12px;">
+                          <div class="cold6" style=" float: left;">
+                               <label class="row"> Agendamento: </label>
+                               <div class="agendamento"></div>
+                          </div>
+                          <div class="cold4" style="width: 42%;">
+                               <label class="row"> Descrição: </label>
+                               <textarea name="desc" style="resize: none; height: 169px;"></textarea>
+                          </div>
+                      </div>
+                  </form>`).dialog({
+                    modal:true,
+                    width:'600px',
+                    open:function(){
+                        $( this ).find('.agendamento').datepicker();
+                    },
+                    buttons: {
+                      Salvar:function(){
+
+                        $( this ).find('[name="cod"]').removeClass('required');
+                        $( this ).find('[name="valor"]').removeClass('required');
+                        $( this ).find('[name="desc"]').removeClass('required');
+
+                        let cod = $( this ).find('[name="cod"]').val();
+                        let valor_final = $( this ).find('[name="valor"]').val();
+                        let descricao = $( this ).find('[name="desc"]').val();
+                        let agendamento = $( this ).find('.agendamento').datepicker( "getDate" );
+
+                        if(cod.toString().length < 1){
+                            $( this ).find('[name="cod"]').addClass('required');
+                        }else if(valor_final.toString().length < 1){
+                            $( this ).find('[name="valor"]').addClass('required');
+                        }else if(descricao.toString().length < 1){
+                            $( this ).find('[name="desc"]').addClass('required');
+                        }else{
+                            let ctx = this;
+                            db.insert(`tbl_folha_pagamento( valor_final, data_agendamento, descricao_pagamento, cod_pagamento_funcionario, id_funcionario, id_usuario_desktop)VALUES( ?, ?, ?, ?, ?, ?)`,
+                            [valor_final,agendamento,descricao,cod,funcionario.id,window.user.id]).then(function(id_folha){
+                                db.insert(`tbl_contas_pagar (descricao, data_entrada, valor, codigo_pagamento, confirmado) VALUES ('${descricao}', ?, ?, ?, ?)`,[agendamento,valor_final,cod,0])
+                                .then(function(id_conta_pagar){
+                                    db.insert(`tbl_folha_pagamento_contas_pagar ( id_folha_pagamento, id_conta_pagar) VALUES ( ?, ?)`,[id_folha,id_conta_pagar])
+                                    .then(function(){
+                                        $( ctx ).dialog( "close" );
+                                        return db.selectAll('tbl_folha_pagamento WHERE id_funcionario = ? limit 5 ',[funcionario.id]).then(folhas_novas=>{
+                                              let pagamentos_novos = '';
+                                              for(let pagamento of folhas_novas){
+
+                                                  let dt_pagamento = new Date(pagamento.data_agendamento);
+
+                                                  let data_p = dt_pagamento.getDate()+"/"+dt_pagamento.getMonth()+"/"+dt_pagamento.getFullYear();
+
+                                                  pagamentos_novos+= `<tr>
+                                                                    <td>${pagamento.id_folha_pagamento}</td>
+                                                                    <td>${data_p}</td>
+                                                                    <td>${'R$' + pagamento.valor_final}</td>
+                                                                    <td>${pagamento.cod_pagamento_funcionario}</td>
+                                                                </tr>`;
+                                              }
+                                              alerta.janela.find('table tbody tr').remove();
+                                              alerta.janela.find('table tbody').html(pagamentos_novos);
+                                        })
+                                    })
+                                })
+                                //INSERT INTO tbl_contas_pagar (id_conta_pagar, descricao, data_entrada, valor, titulos_baixados, data_baixa, codigo_pagamento, confirmado) VALUES (0, '', '', 0, '', '', '', );
+                                //INSERT INTO tbl_folha_pagamento_contas_pagar (id_pedido_contas_pagar, id_folha_pagamento, id_conta_pagar) VALUES (0, 0, 0);
+
+                            });
+                        }
+                      }
+                    }
+                  })
+            })*/
+          }
+          alerta.view(' Conciliação ').then(html=>{}).catch(erro=>{});
+      });
   },
   editar:function(){},
   deletar:function(){},

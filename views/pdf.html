@@ -1,155 +1,94 @@
-<style>
-  body{
-    margin: 0px;
-    padding: 0px;
-    border: solid .1px black;
-    box-sizing: border-box;
-    border-width: 0px .1px;
-    height: auto;
-    overflow: auto;
-  }
-  .page{width: 100%;height: 100vh;padding: 0px;overflow: hidden;background-color: #fbfbfb;}
+<div>
+    <style>
+      body{
+        margin: 0px;
+        padding: 0px;
+        border: solid .1px black;
+        box-sizing: border-box;
+        border-width: 0px .1px;
+        height: auto;
+        overflow: auto;
+      }
+      .page{
+        width: 100%;
+        height: 100vh;
+        min-height: 100px;
+        padding: 0px;
+        overflow: hidden;
+        background-color: #fbfbfb;
+      }
 
-  .page .legend{left: -49vh;left: -49vmax;display: block;position: relative;height: 22px;margin-top: -22px;min-width: 100vh;transform: rotate(90deg);background-color: #008277;top: 51vh;overflow: hidden;background-color: darkcyan;}
-  .page .legend .conteudo{text-align: justify;word-break: break-word;font-size: 11px;vertical-align: middle;}
-  .page .legend .conteudo * {
-    padding: 0px;
-    margin: 0px;
-    width: unset;
-    display: inline-block;
-  }
-  .page .rodape{float: right;min-width: 30%;width: 221px;bottom: 0;height: 7vh;}
-  .page .rodape .separador{border-bottom: solid 0.1px black;text-align: center;padding: 0px 0px 5px 0px;color: #212121;}
-  .page .rodape .paginas{text-align: end;padding: 4px 32px 0px 0px;font-size: 17px;font-weight: bold;}
-  .page .table{width: max-content;margin-left: auto;margin-right: auto;max-width: 92%;overflow-x: hidden;height: 90vh;background-color: #fff;margin-bottom: 8px;}
+      .page .legend{left: -49vh;left: -49vmax;display: block;position: relative;height: 22px;margin-top: -22px;min-width: 100vh;transform: rotate(90deg);background-color: #008277;top: 51vh;overflow: hidden;background-color: darkcyan;}
+      .page .legend .conteudo{text-align: justify;word-break: break-word;font-size: 11px;vertical-align: middle;}
+      .page .legend .conteudo * {
+        padding: 0px;
+        margin: 0px;
+        width: unset;
+        display: inline-block;
+      }
+      .page .rodape{float: right;min-width: 30%;width: 221px;bottom: 0;height: 7vh;}
+      .page .rodape .separador{border-bottom: solid 0.1px black;text-align: center;padding: 0px 0px 5px 0px;color: #212121;}
+      .page .rodape .paginas{text-align: end;padding: 4px 32px 0px 0px;font-size: 17px;font-weight: bold;}
+      .page .table{width: max-content;margin-left: auto;margin-right: auto;max-width: 92%;overflow-x: hidden;height: 90vh;background-color: #fff;margin-bottom: 8px;}
 
-  .page .table table{border-collapse: unset;border-spacing: unset;min-width: 555px;}
-  .page .table table thead{background-color: #f9f9f9;}
-  .page .table table thead tr th{box-sizing: border-box;background-color: #f9f9f9;padding: 10px 15px;}
-  .page .table table tbody{
+      .page .table table{border-collapse: unset;border-spacing: unset;min-width: 555px;}
+      .page .table table thead{background-color: #f9f9f9;}
+      .page .table table thead tr th{box-sizing: border-box;background-color: #f9f9f9;padding: 10px 15px;}
+      .page .table table tbody{
 
-  }
-  .page .table table tbody tr td{font-size: 15px;text-align: center;vertical-align: middle;color: #008272;}
-  thead tr th,tbody tr td{
-      vertical-align: bottom;
-      border-bottom: 2px solid #ddd;
-      padding: 8px;
-      line-height: 1.42857143;
-      text-align: left;
-  }
-  tbody tr:nth-child(even) {
-    background-color: #fff;
-  }
-  tbody tr:nth-child(odd) {
-    background-color: #f5f5f5;
-  }
-  tbody tr{
-     font-size: 0.8em;
-  }
-
-
-  tbody tr td:nth-child(even) {
-    background-color: white;
-    color: #1e1f1f;
-  }
-
-  tbody tr td:nth-child(odd) {
-    background-color: #efefef;
-    color: #1e1f1f;
-  }
-
-  .center-vertical{
-      display: block;
-      /* position: relative; */
-      /* top: 35%; */
-      margin-top: 37vh;
-      /* left: 38%; */
-      margin-left: auto;
-      margin-right: auto;
-      text-align: center;
-      width: 190px;
-      vertical-align: middle;
-      font-weight: bolder;
-  }
-  .center-vertical img{
-      display:block;
-      margin-left:auto;
-      margin-right:auto;
-  }
-  .page.apresentacao{
-    background-color: #008277;
-    color:#f9f9f9;
-  }
-</style>
-<div class="page apresentacao">
-
-    <div class="center-vertical">
-        <img src="img/icon.png">
-        <h2> {{mes}}  de {{ano}} </h2>
-        <h3> {{tipo}} </h3>
-        <h4> 1 de {{paginas}} </h4>
-    </div>
+      }
+      .page .table table tbody tr td{font-size: 15px;text-align: center;vertical-align: middle;color: #008272;}
+      thead tr th,tbody tr td{
+          vertical-align: bottom;
+          border-bottom: 2px solid #ddd;
+          padding: 8px;
+          line-height: 1.42857143;
+          text-align: left;
+      }
+      tbody tr:nth-child(even) {
+        background-color: #fff;
+      }
+      tbody tr:nth-child(odd) {
+        background-color: #f5f5f5;
+      }
+      tbody tr{
+         font-size: 0.8em;
+      }
 
 
+      tbody tr td:nth-child(even) {
+        background-color: white;
+        color: #1e1f1f;
+      }
 
-</div>
-<div class="page">
-    <div class="legend">
-        <div class="conteudo">
-          {{codigo_data}}
-           <!-- --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435
-           --P2 2019-08-27 08:32:00 Pedido U 1 : N°5345435345435 -->
-        </div>
-    </div>
-    <div class="table">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Usuario</th>
-                    <th>Cod</th>
-                    <th>Fornecedor</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                    <th>Tipo</th>
-                    <th>Desc</th>
-                </tr>
-            </thead>
-            <tbody>
-              {{linhas}}
-                <!--<tr>
-                    <td>584</td>
-                    <td>Gilberto</td>
-                    <td>P34534</td>
-                    <td>SmartHouse</td>
-                    <td>R$ 384,80</td>
-                    <td> OK </td>
-                </tr>-->
-            </tbody>
-        </table>
-    </div>
-    <div class="rodape">
-        <div class="separador">
-            N°{{codigo}}
-        </div>
-        <div class="paginas">
-            {{pagina}} de {{paginas}}
-        </div>
-    </div>
+      tbody tr td:nth-child(odd) {
+        background-color: #efefef;
+        color: #1e1f1f;
+      }
+
+      .center-vertical{
+          display: block;
+          /* position: relative; */
+          /* top: 35%; */
+          margin-top: 37vh;
+          /* left: 38%; */
+          margin-left: auto;
+          margin-right: auto;
+          text-align: center;
+          width: 190px;
+          vertical-align: middle;
+          font-weight: bolder;
+      }
+      .center-vertical img{
+          display:block;
+          margin-left:auto;
+          margin-right:auto;
+      }
+      .page.apresentacao{
+        background-color: #008277;
+        color:#f9f9f9;
+      }
+    </style>
+          <h2> {{mes}}  de {{ano}} </h2>
+          <h3> {{tipo}} </h3>
 </div>
