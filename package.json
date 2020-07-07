@@ -41,7 +41,7 @@
     "mysql": "2.16.0"
   },
   "devDependencies": {
-    "electron": "4.0.4",
+    "electron": "7.2.4",
     "electron-prebuilt": "^1.4.13"
   }
 }
